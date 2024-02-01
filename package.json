@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/CptFlashbang/SSP-S2W15/issues"
   },
-  "homepage": "https://github.com/CptFlashbang/SSP-S2W15#readme"
+  "homepage": "https://github.com/CptFlashbang/SSP-S2W15#readme",
+  "type": "module"
 }
