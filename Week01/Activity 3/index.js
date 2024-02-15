@@ -14,3 +14,7 @@ app.get('/tickets', (req, res) => {
 app.get('/users', (req, res) => {
     res.send('<h1>Users Page</h1>');
 });
+
+app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`);
+});
