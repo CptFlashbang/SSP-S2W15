@@ -7,6 +7,10 @@ app.get('/login', (req, res) => {
     res.send('<h1>Login Page</h1>');
 });
 
+app.get('/tickets', (req, res) => {
+    res.send('<h1>Tickets Page</h1>');
+});
+
 app.get('/users', (req, res) => {
     res.send('<h1>Users Page</h1>');
 });
