@@ -3,17 +3,6 @@ import express from 'express';
 const app = express();
 const port = 2319;
 
-app.use((req, res, next) => {
-    console.log(`Request made from IP: ${req.ip} for resource: ${req.originalUrl}`);
-    next()
-});
-
-function auth_user(res, req, next)
-{
-req.redirect("\login");
-}
-
-
 app.get('/', (req, res) => {
     res.send(`
         <h1 style="color: red;">Hello World</h1>
