@@ -12,6 +12,8 @@ function auth_user(req, res, next) {
     res.redirect("/login");
 }
 
+
+
 app.get('/', (req, res) => {
     res.send(`
         <h1 style="color: red;">Hello World</h1>
@@ -39,6 +41,22 @@ app.get('*', (req, res) => {
 
 app.get('/breaker', (req, res) => {
     throw new Error("BORKED");
+});
+
+app.use((req, res, next) => {
+    res.status(404);
+    res.format(
+        {
+            html: () => {
+                res.render("404", { url: req.url });
+            },
+            json: () => {
+                res.json({ error: "Not found" });
+            },
+            default: () => {
+                res.type("txt").send("Not found");
+            }
+        });
 });
 
 app.listen(port, () => {
