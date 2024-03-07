@@ -37,6 +37,10 @@ app.get('*', (req, res) => {
     res.redirect('/login');
 });
 
+app.get('/breaker', (req, res) => {
+    throw new Error("BORKED");
+});
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
