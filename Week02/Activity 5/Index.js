@@ -39,26 +39,6 @@ app.get('*', (req, res) => {
     res.redirect('/login');
 });
 
-app.get('/breaker', (req, res) => {
-    throw new Error("BORKED");
-});
-
-app.use((req, res, next) => {
-    res.status(404);
-    res.format(
-        {
-            html: () => {
-                res.render("404", { url: req.url });
-            },
-            json: () => {
-                res.json({ error: "Not found" });
-            },
-            default: () => {
-                res.type("txt").send("Not found");
-            }
-        });
-});
-
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
