@@ -10,7 +10,7 @@ app.use((req, res, next) => {
 
 function auth_user(req, res, next) {
     res.redirect("/login");
-}
+};
 
 
 
@@ -57,6 +57,25 @@ app.use((req, res, next) => {
                 res.type("txt").send("Not found");
             }
         });
+});
+
+app.use((err, req, res, next) => {
+    console.log(err.stack)
+    res.status(500);
+    res.format(
+        {
+            // html: () =>
+            // { 
+            // res.render("500", {url: req.url}); 
+            // },
+            json: () => {
+                res.json({ error: "Internal Server Error" });
+            },
+            default: () => {
+                res.type("txt").send("Internal Server Error");
+            }
+        }
+    );
 });
 
 app.listen(port, () => {
