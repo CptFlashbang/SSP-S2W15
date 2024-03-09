@@ -6,17 +6,7 @@
     <title>Ticket-ace</title>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/break-it">Break It</a></li>
-                <li><a href="/lose-it">Lose It</a></li>
-                <li><a href="/unauth-it">Unauth It</a></li>
-                <li><a href="/tickets">Tickets</a></li>
-            </ul>
-        </nav>
-    </header>  
+    <%- include('partials/_header') %>
     <main>
         <h1>Lorem ipsum dolor sit amet</h1>
         <section id="about">
@@ -24,8 +14,6 @@
             <p>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
         </section>
     </main>
-    <footer>
-        <p>&copy; 2024 | Callum Yates | Y042944M</p>
-    </footer>
+    <%- include('partials/_footer') %>
 </body>
 </html>
