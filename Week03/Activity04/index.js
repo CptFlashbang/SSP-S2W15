@@ -36,6 +36,25 @@ app.use((err, req, res, next) => {
   console.error("You sent me: " + err.stack);
 });
 
+function handle_401(req, res, next) {
+  res.status(401)
+  res.format(
+    {
+      html: () => {
+        res.render("401", { url: req.protocol + "://" + req.hostname + req.originalUrl });
+      },
+      json: () => {
+        res.json({ error: "Authorisation required" });
+      },
+      default: () => {
+        res.type("txt").send("Authorisation required");
+      }
+    }
+  )
+}
+
+
+
 app.use((req, res, next) => {
   res.status(404); res.format(
     {
