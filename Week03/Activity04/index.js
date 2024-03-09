@@ -26,6 +26,16 @@ app.get('/test', (req, res) => {
 
 app.get("/", (req, res) => { res.render("index"); });
 
+app.use((err, req, res, next) => {
+  switch (err.status) {
+    case 401: handle_401(req, res, next);
+      break;
+    default: handle_500(req, res, next);
+      break;
+  }
+  console.error("You sent me: " + err.stack);
+});
+
 app.use((req, res, next) => {
   res.status(404); res.format(
     {
