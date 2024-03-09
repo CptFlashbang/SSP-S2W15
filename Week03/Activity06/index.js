@@ -28,6 +28,16 @@ app.get('/break-it', (req, res) => {
   throw new Error("Broken It");
 });
 
+app.get('/unauth-it', (req, res, next) => {
+  const error = new Error("Unauthorized Access");
+  error.status = 401;
+  next(error);
+});
+
+app.get('/tickets",', (req, res) => {
+  
+});
+
 app.get("/", (req, res) => { res.render("index"); });
 
 app.use((err, req, res, next) => {
