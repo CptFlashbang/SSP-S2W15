@@ -53,7 +53,22 @@ function handle_401(req, res, next) {
   )
 }
 
-
+function handle_500(req, res, next) {
+  res.status(500)
+  res.format(
+    {
+      html: () => {
+        res.render("500", { url: req.protocol + "://" + req.hostname + req.originalUrl });
+      },
+      json: () => {
+        res.json({ error: "Internal server error" });
+      },
+      default: () => {
+        res.type("txt").send("Internal server error");
+      }
+    }
+  )
+}
 
 app.use((req, res, next) => {
   res.status(404); res.format(
