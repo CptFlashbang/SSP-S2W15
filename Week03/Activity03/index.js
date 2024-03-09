@@ -24,6 +24,7 @@ app.get('/test', (req, res) => {
   res.send('Server is working!');
 });
 
+app.get("/", (req, res) => { res.render("index"); });
 
 app.use((req, res, next) => {
   res.status(404); res.format(
