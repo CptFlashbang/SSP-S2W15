@@ -30,10 +30,10 @@ app.get('/break-it', (req, res) => {
 });
 
 //throw an error with a status specified as 401
-app.get('/unauth-it', (req, res, next) => {
+app.get('/unauth-it', (req, res) => {
   const error = new Error("Unauthorized Access");
   error.status = 401;
-  next(error);
+  throw error;
 });
 
 app.get('/tickets",', (req, res) => {
