@@ -1,0 +1,12 @@
+{
+  "name": "week03",
+  "version": "1.0.0",
+  "description": "Week 3 activities for SSP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "CptFlashbang",
+  "license": "ISC",
+  "type": "module"
+}
