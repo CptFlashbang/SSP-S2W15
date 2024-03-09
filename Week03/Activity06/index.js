@@ -36,8 +36,14 @@ app.get('/unauth-it', (req, res) => {
   throw error;
 });
 
-app.get('/tickets",', (req, res) => {
-  
+app.get('/tickets', (req, res) => {
+  let fakeDatabase = [
+    { name: "Hell Swimmers 2", price: 39.0 },
+    { name: "Palglobe", price: 29.0 },
+    { name: "Defense of the Retirees", price: 53.0 },
+  ];
+
+  res.render("tickets", { user: "Callum", data: fakeDatabase });
 });
 
 app.get("/", (req, res) => { res.render("index"); });
