@@ -8,14 +8,15 @@ const app = express();
 const port = 2319;
 
 // Configuration 
-app.disable("x-powered-by"); 
+app.disable("x-powered-by");
 app.set("view engine", "ejs");
 
-// Serve static files from "Activity 2"
-app.use(express.static('.'));
+app.use(express.static('public'));
+app.use("/favicon.ico", express.static("public/assets/ico/SSP.ico"));
 
-// Attempt to serve favicon.ico specifically
-app.use("/favicon.ico", express.static("assets/ico/SSP.ico"));
+app.get('/test', (req, res) => {
+    res.send('Server is working!');
+  });
 
 // Application Listen
 app.listen(port, () => {
