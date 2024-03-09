@@ -1,22 +1,15 @@
-<!DOCTYPE html> <!-- Copyright (c) 2024 Staffordshire University - All Rights Reserved -->
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>Error</title> <!-- Style -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
 </head>
-
 <body>
+    <%- include('partials/_header') %>
     <main>
+        <h1>Error: 404</h1>
         <section>
-            <header>
-                <h1>404</h1>
-            </header>
-        </section>
-        <section>
-            <header>
-                <h1>Uh Oh!</h1>
-            </header>
             <h2>You seem to be a little bit lost. Let us help you out...</h2>
             <h3>Error 404 Page Not Found:
                 <span class="error-url">
@@ -24,15 +17,7 @@
                 </span>
             </h3>
         </section>
-        <section class="error-directions">
-            <p>Here are some helpful links instead:</p>
-            <p><a href="/">Home</a></p>
-            <p><a href="/break-it">Break It</a></p>
-            <p><a href="/lose-it">Lose It</a></p>
-            <p><a href="/unauth-it">Unauth It</a></p>
-            <p><a href="/tickets">Tickets</a></p>
-        </section>
     </main>
+    <%- include('partials/_footer') %>
 </body>
-
 </html>
