@@ -24,10 +24,12 @@ app.get('/test', (req, res) => {
   res.send('Server is working!');
 });
 
+//throw an error which triggers an automatic 500 code
 app.get('/break-it', (req, res) => {
   throw new Error("Broken It");
 });
 
+//throw an error with a status specified as 401
 app.get('/unauth-it', (req, res, next) => {
   const error = new Error("Unauthorized Access");
   error.status = 401;
