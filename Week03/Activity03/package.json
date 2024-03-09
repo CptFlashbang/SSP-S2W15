@@ -1,7 +1,7 @@
 {
-  "name": "week03",
+  "name": "activity03",
   "version": "1.0.0",
-  "description": "Week 3 activities for SSP",
+  "description": "Activity 3 for Week 3 of SSP",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,8 +10,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "colors": "^1.4.0",
     "ejs": "^3.1.9",
-    "express": "^4.18.3"
+    "express": "^4.18.3",
+    "node": "^21.7.1"
   }
 }
