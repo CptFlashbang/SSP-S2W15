@@ -16,7 +16,7 @@ const __dirname = path.dirname(__filename);
 // Configuration 
 app.disable("x-powered-by");
 app.set("view engine", "ejs");
-
+app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/favicon.ico", express.static("public/assets/ico/SSP.ico"));
 
