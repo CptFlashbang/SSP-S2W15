@@ -24,6 +24,10 @@ app.get('/test', (req, res) => {
   res.send('Server is working!');
 });
 
+app.get('/break-it', (req, res) => {
+  throw new Error("Broken It");
+});
+
 app.get("/", (req, res) => { res.render("index"); });
 
 app.use((err, req, res, next) => {
