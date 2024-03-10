@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket-ace</title>
+</head>
+
+<body>
+    <%- include('partials/_header.html') %>
+        <main>
+            <h1>Lorem ipsum dolor sit amet</h1>
+            <section id="about">
+                <ul class="user-products-list">
+                    <% for (let i=0; i < data.length; i++) { %>
+                        <li>
+                            <h4>Attraction: <%= data[i].name %>
+                            </h4>
+                            <p>Price: £<%= data[i].price %>
+                            </p>
+                        </li>
+                        <% } %>
+                </ul>
+            </section>
+            <% if(data.length> 0)
+                { %>
+                <p>Select a product from the list.</p>
+                <% } else { %>
+                    <p>No products available...</p>
+                    <% } %>
+        </main>
+        <%- include('partials/_footer.html') %>
+</body>
+
+</html>
