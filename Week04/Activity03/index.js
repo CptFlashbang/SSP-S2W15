@@ -23,3 +23,10 @@ app.use("/favicon.ico", express.static("public/assets/ico/favicon.ico"));
 
 // ROUTERS -------------------------------------------------------------------
 app.use("/users", userRouter);
+
+// ROUTE ---------------------------------------------------------------------
+app.get("/", (req, res) =>
+{
+console.log("Redirect to users router");
+res.redirect("/users/welcome");
+});
