@@ -5,12 +5,12 @@ import * as path from "path";
 import {fileURLToPath} from "url";
 import tokenRouter from "./routes/tokens.js";
 
-// Initialize Express application -------------------------------------------------------
-const app = express();
-
 // Use File Location of Index and Get Dir -------------------------------------------------------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Initialize Express application -------------------------------------------------------
+const app = express();
 
 // Preroute MIDDLEWARE -------------------------------------------------------
 app.use(express.static(path.join(__dirname,"public")));
