@@ -23,8 +23,17 @@
             <p>Password must be at least 6 characters</p>
             </fieldset>
             <input id="signup" disabled type="submit" value="Sign up ⛳"></input>
-            </form>
-            
+        </form>      
+        <script>
+            // Script Const
+            const formCont = document.getElementById("signup-form");
+            // Validity Listener
+            formCont.addEventListener("change", () => {
+                // Local Variable
+                let signupBtn = document.getElementById("signup");
+                signupBtn.disabled = !formCont.checkValidity();
+            });
+        </script>      
     </main>
     <%- include('partials/_footer.html') %>
 </body>
