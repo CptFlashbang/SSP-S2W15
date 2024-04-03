@@ -16,3 +16,7 @@ app.use("/favicon.ico", express.static("public/assets/ico/SSP.ico"));
 
 // ROUTER -------------------------------------------------------
 app.use("/tokens", tokenRouter);
+
+// Start server -------------------------------------------------------
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
