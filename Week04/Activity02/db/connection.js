@@ -4,6 +4,6 @@ import { MongoClient } from "mongodb";
 
 // Module Constants
 const dbName = "SSP";
-const dbUName = encodeURIComponent("<your_username>");
-const dbPass = encodeURIComponent("<your_password>");
-const url = `mongodb+srv://${dbUName}:${dbPass}@<your_link>`;
+const dbUName = encodeURIComponent("CallumYates");
+const dbPass = encodeURIComponent("C@bbage9829");
+const url = `mongodb+srv://${dbUName}:${dbPass}@ssp.slyivjn.mongodb.net/?retryWrites=true&w=majority&appName=SSP`;
