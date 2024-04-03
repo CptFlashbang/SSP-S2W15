@@ -30,3 +30,9 @@ app.get("/", (req, res) =>
 console.log("Redirect to users router");
 res.redirect("/users/welcome");
 });
+
+// START SERVER --------------------------------------------------------------
+app.listen(8080, () =>
+{
+console.log("The server is listening...");
+});
