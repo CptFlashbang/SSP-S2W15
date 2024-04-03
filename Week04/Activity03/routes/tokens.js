@@ -10,3 +10,9 @@ const router = express.Router();
 // Middleware for This Router
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
+
+// Routes for This Router (all routes /tokens onwards)
+router.get('/', (req, res) =>
+{
+res.render("tokens");
+});
