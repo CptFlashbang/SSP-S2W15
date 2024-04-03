@@ -16,3 +16,5 @@ router.get('/', (req, res) =>
 {
 res.render("tokens");
 });
+
+export default router;
