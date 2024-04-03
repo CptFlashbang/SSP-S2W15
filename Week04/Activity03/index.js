@@ -1,3 +1,5 @@
+'use strict'
+// Imports -------------------------------------------------------
 import express from 'express';
 import * as path from "path";
 import {fileURLToPath} from "url";
@@ -18,5 +20,5 @@ app.use("/favicon.ico", express.static("public/assets/ico/SSP.ico"));
 app.use("/tokens", tokenRouter);
 
 // Start server -------------------------------------------------------
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 2319;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
