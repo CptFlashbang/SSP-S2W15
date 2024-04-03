@@ -23,3 +23,5 @@ catch(err)
 console.error(err);
 }
 db = conn.db(dbName);
+
+export default db;
