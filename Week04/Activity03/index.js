@@ -20,3 +20,6 @@ app.set("views", path.join(__dirname, "views"));
 // Preroute MIDDLEWARE -------------------------------------------------------
 app.use(express.static(path.join(__dirname,"public")));
 app.use("/favicon.ico", express.static("public/assets/ico/favicon.ico"));
+
+// ROUTERS -------------------------------------------------------------------
+app.use("/users", userRouter);
