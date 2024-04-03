@@ -13,3 +13,13 @@ const dbClient = new MongoClient(url);
 // Module Variables
 let conn;
 let db;
+
+try
+{
+conn = await dbClient.connect();
+}
+catch(err)
+{
+console.error(err);
+}
+db = conn.db(dbName);
