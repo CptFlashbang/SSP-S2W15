@@ -23,4 +23,20 @@ router.get('/buy-tokens', async (req, res) => {
     res.render("buy-tokens", { games: results });
 });
 
+router.post("/buy-tokens", async (req, res, next) => {
+    // Local Variables 
+    let findID;
+    let collection = await db.collection("orders");
+    let newDoc = {}; let result;
+    // Demo what's in the body 
+    console.log(req.body);
+    newDoc.order = [];
+    newDoc.date = new Date();
+    Object.keys(req.body).forEach(key => {
+        newDoc.order.push({ "name": key, "used": false });
+    });
+    result = await collection.insertOne(newDoc);
+    res.render("tokens-bought");
+});
+
 export default router;
