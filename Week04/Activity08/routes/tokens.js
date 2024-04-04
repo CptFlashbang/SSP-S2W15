@@ -39,4 +39,28 @@ router.post("/buy-tokens", async (req, res, next) => {
     res.render("tokens-bought");
 });
 
+// View Orders by ID --- But we might want to limit this to only if the user has access!
+router.get("/orders/:orderId", async (req, res, next) => {
+    // Local Variables
+    let findID;
+    let collection = await db.collection("orders");
+    let result;
+
+    try {
+        findID = new ObjectId(req.params.orderId);
+        result = await collection.findOne({ "_id": findID });
+
+        // Check if we have that result, if not 404
+        if (!result) {
+            next();
+        }
+        else {
+            res.render("order", { order: result });
+        }
+    }
+    catch (err) {
+        // Express cannot catch a thrown error in an async function therefore we pass to next and handle it, this error is from a badly formed ID
+        next(err);
+    }
+});
 export default router;
