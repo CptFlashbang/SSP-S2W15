@@ -24,20 +24,25 @@
             <form action="/tokens/buy-tokens" method="post">
                 <section class="product-list">
                     <% for (let i=0; i < games.length; i++) { %>
-                        <section> <img class="token-img" src="/assets/img/token.png" alt="token"> <label
-                                for="<%= games[i].name %>">
+                        <section>
+                            <img class="token-img" src="/assets/img/token.png" alt="token">
+                            <label for="<%= games[i].name %>">
                                 <h3>
                                     <%= games[i].name %>
                                 </h3>
                                 <p>
-                                    <% for (let j=0; j < games[i].tags.length; j++) { %> <span class="product-tags">
+                                    <% for (let j=0; j < games[i].tags.length; j++) { %>
+                                        <span class="product-tags">
                                             <%= games[i].tags[j] %>
                                         </span>
                                         <% } %>
                                 </p>
-                            </label> <input type="checkbox" name="<%= games[i].name %>" id="id[]"> </section>
+                            </label>
+                            <input type="checkbox" name="<%= games[i].name %>" id="id[]">
+                        </section>
                         <% } %>
-                </section> <input class="product-submit" type="submit" value="Get Tokens">
+                </section>
+                <input class="product-submit" type="submit" value="Get Tokens">
             </form>
         </main>
         <%- include('partials/_footer.html') %>
