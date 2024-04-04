@@ -63,4 +63,20 @@ router.get("/orders/:orderId", async (req, res, next) => {
         next(err);
     }
 });
+
+
+router.post("/orders/:orderId", async (req, res, next) => {
+    // Local Variables 
+    let collection = await db.collection("orders");
+    let findID = new ObjectId(req.params.orderId);
+    let result; console.log(req.body);
+    result = await collection.updateOne(
+        { "_id": findID },
+        { "$set": { "order.$[element].used": true } },
+        { arrayFilters: [{ "element.name": { $eq: req.body.usedtoken } }] });
+    result = await collection.findOne({ "_id": findID });
+    res.render("order", { order: result });
+});
+
+
 export default router;
