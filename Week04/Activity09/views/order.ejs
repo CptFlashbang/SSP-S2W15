@@ -10,7 +10,7 @@
 <body>
     <%- include('partials/_header.html') %>
         <main>
-            <h2>Order Date: 
+            <h2>Order Date:
                 <i>
                     <%= order.date %>
                 </i>
@@ -18,16 +18,19 @@
             <section class="product-list">
                 <% for (let i=0; i < order.order.length; i++) { %>
                     <section>
-                        <form action="/tokens/orders/<%= order._id %>" method="post"> <img class="token-img"
-                                src="/assets/img/token.png" alt="token"> <label for="<%= order.order[i].name %>">
+                        <form action="/tokens/orders/<%= order._id %>" method="post">
+                            <img class="token-img" src="/assets/img/token.png" alt="token">
+                            <label for="<%= order.order[i].name %>">
                                 <h3>
                                     <%= order.order[i].name %>
                                 </h3>
-                            </label> <input type="hidden" name="usedtoken" value="<%= order.order[i].name %>"> <input
-                                class="product-submit" type="submit" value="Use Token" <%
-                                if(order.order[i].used===true){ %> disabled <% } %>> </form>
+                            </label>
+                            <input type="hidden" name="usedtoken" value="<%= order.order[i].name %>">
+                            <input class="product-submit" type="submit" value="Use Token" <%
+                                if(order.order[i].used===true){ %> disabled <% } %>>
+                        </form>
                     </section>
-                <% } %>
+                    <% } %>
             </section>
         </main>
         <%- include('partials/_footer.html') %>
