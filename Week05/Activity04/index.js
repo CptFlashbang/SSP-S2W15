@@ -7,7 +7,7 @@ import userRouter from "./routes/users.js";
 
 // Application Objects
 const __filename = fileURLToPath(import.meta.url);
-const _dirname = path.dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 // Application Objects
 const app = express();
@@ -32,7 +32,7 @@ res.redirect("/users/welcome");
 });
 
 // START SERVER --------------------------------------------------------------
-app.listen(8080, () =>
+app.listen(2319, () =>
 {
 console.log("The server is listening...");
 });
