@@ -182,3 +182,5 @@ function allowed(req, res, next)
         res.redirect(401, "/users/sign-in");
     }
 }
+
+export default router;
