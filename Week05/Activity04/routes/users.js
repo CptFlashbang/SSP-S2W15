@@ -133,3 +133,32 @@ function create(req, res, next)
             res.status(409); res.render("sign-up", { comment: error.code });
         });
 }
+
+function sign_in(req, res, next)
+{
+    signInWithEmailAndPassword(firebaseAuth, req.body.email, req.body.password)
+        .then(async (userCredential) =>
+        {
+            const expiresIn = 60 * 60 * 24 * 5 * 1000;
+            const idToken = await userCredential.user.getIdToken();
+            admin.auth().createSessionCookie(idToken, { expiresIn })
+                .then((sessionCookie) =>
+                {
+                    const options = { maxAge: expiresIn, httpOnly: true };
+                    res.cookie("session", sessionCookie, options);
+                    next();
+                })
+                .catch((error) =>
+                {
+                    console.error("ERROR: " + error);
+                });
+        })
+        .catch((error) =>
+        {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Failed to sign in user: " + req.body.email);
+            res.status(409);
+            res.render("sign-up", { comment: error.code });
+        });
+}
