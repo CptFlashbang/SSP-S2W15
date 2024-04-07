@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const data = require(path.join(__dirname, "../key.json"));
 
-const firebaseConfig = {
+const firebaseCfg = {
     apiKey: "AIzaSyB_q2Czzwc63A-gR9gD3h_i6taVxtHOq5w",
     authDomain: "ssp-nodejs-13ac2.firebaseapp.com",
     projectId: "ssp-nodejs-13ac2",
