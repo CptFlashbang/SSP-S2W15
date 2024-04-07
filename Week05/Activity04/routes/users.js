@@ -25,10 +25,22 @@ const firebaseConfig = {
     storageBucket: "ssp-nodejs-13ac2.appspot.com",
     messagingSenderId: "313657043897",
     appId: "1:313657043897:web:4ad29cf21374065b652468"
-  };
+};
 
 // Router Objects 
-const firebaseApp = initializeApp(firebaseCfg); 
-const firebaseAuth = getAuth(); 
-const router = express.Router(); 
+const firebaseApp = initializeApp(firebaseCfg);
+const firebaseAuth = getAuth();
+const router = express.Router();
 const upload = multer();
+
+admin.initializeApp(
+    {
+        credential: admin.credential.cert(data)
+    }
+);
+
+// Middleware for This Router 
+router.use(bodyParser.json()); 
+router.use(bodyParser.urlencoded({extended: true})); 
+router.use(cookieParser()); 
+router.use(upload.array());
