@@ -50,3 +50,15 @@ router.get('/', (req, res) =>
 { 
     res.redirect("/users/welcome"); 
 });
+
+router.get('/sign-in', (req, res) => 
+{ 
+    res.render("sign-in");
+});
+
+router.post('/sign-in', (req, res) =>
+{
+    res.status(200)
+    res.redirect("/users/welcome");
+});
+
