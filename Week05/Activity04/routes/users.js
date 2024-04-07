@@ -87,7 +87,7 @@ router.get("/welcome", allowed, (req, res) =>
     });
 });
 
-router.get("/sign-out", (req, res) =>
+router.post("/sign-out", (req, res) =>
 {
     // Local Const
     const sessionCookie = req.cookies.session || "";
