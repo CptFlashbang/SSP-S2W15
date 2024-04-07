@@ -162,3 +162,23 @@ function sign_in(req, res, next)
             res.render("sign-up", { comment: error.code });
         });
 }
+
+function allowed(req, res, next)
+{
+    if (req.cookies.session) {
+        admin.auth().verifySessionCookie(req.cookies.session, true /** checkRevoked */)
+            .then((decodedClaims) =>
+            {
+                console.log("Allowed!: " + decodedClaims.uid);
+                res.locals.uid = decodedClaims.uid;
+                next();
+            })
+            .catch(function (error)
+            {
+                console.log(error);
+                res.redirect(403, "/users/sign-in");
+            });
+    } else {
+        res.redirect(401, "/users/sign-in");
+    }
+}
