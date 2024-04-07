@@ -81,8 +81,29 @@ router.get("/welcome", allowed, (req, res) =>
     {
         // Local Variables
         const email = userRecord.email;
-        
+
         console.log("Render Welcome"); 
         res.render("welcome", {email: email});
+    });
+});
+
+router.get("/sign-out", (req, res) =>
+{
+    // Local Const
+    const sessionCookie = req.cookies.session || "";
+
+    res.clearCookie("session");
+
+    admin.auth().verifySessionCookie(sessionCookie, true).then((decodedClaims) =>
+    {
+        admin.auth().revokeRefreshTokens(decodedClaims.sub)
+    })
+    .then(() =>
+    {
+        res.redirect("/users/sign-in");
+    })
+    .catch((error) =>
+    {
+        res.redirect("/users/sign-in");
     });
 });
