@@ -74,3 +74,14 @@ router.post('/sign-up', create, (req, res) =>
     res.redirect("/users/welcome");
 });
 
+router.get("/welcome", allowed, (req, res) =>
+{
+    // Now supports sessions!
+    admin.auth().getUser(res.locals.uid).then((userRecord) =>
+    {
+        // Local Variables
+        const email = userRecord.email;
+        console.log("Render Welcome"); 
+        res.render("welcome", {email: email});
+    });
+});
