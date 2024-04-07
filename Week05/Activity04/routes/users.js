@@ -62,3 +62,15 @@ router.post('/sign-in', (req, res) =>
     res.redirect("/users/welcome");
 });
 
+router.get('/sign-up', (req, res) =>
+{
+    console.log("Render Sign Up");
+    res.render("sign-up", {comment: ""});
+});
+
+router.post('/sign-up', create, (req, res) =>
+{
+    res.status(201);
+    res.redirect("/users/welcome");
+});
+
