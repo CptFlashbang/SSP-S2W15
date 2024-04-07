@@ -81,6 +81,7 @@ router.get("/welcome", allowed, (req, res) =>
     {
         // Local Variables
         const email = userRecord.email;
+        
         console.log("Render Welcome"); 
         res.render("welcome", {email: email});
     });
