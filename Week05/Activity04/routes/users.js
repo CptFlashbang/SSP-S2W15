@@ -40,19 +40,19 @@ admin.initializeApp(
 );
 
 // Middleware for This Router 
-router.use(bodyParser.json()); 
-router.use(bodyParser.urlencoded({extended: true})); 
-router.use(cookieParser()); 
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(cookieParser());
 router.use(upload.array());
 
 // Routes for This Router (all routes /users onwards) 
-router.get('/', (req, res) => 
-{ 
-    res.redirect("/users/welcome"); 
+router.get('/', (req, res) =>
+{
+    res.redirect("/users/welcome");
 });
 
-router.get('/sign-in', (req, res) => 
-{ 
+router.get('/sign-in', (req, res) =>
+{
     res.render("sign-in");
 });
 
@@ -65,7 +65,7 @@ router.post('/sign-in', (req, res) =>
 router.get('/sign-up', (req, res) =>
 {
     console.log("Render Sign Up");
-    res.render("sign-up", {comment: ""});
+    res.render("sign-up", { comment: "" });
 });
 
 router.post('/sign-up', create, (req, res) =>
@@ -82,8 +82,8 @@ router.get("/welcome", allowed, (req, res) =>
         // Local Variables
         const email = userRecord.email;
 
-        console.log("Render Welcome"); 
-        res.render("welcome", {email: email});
+        console.log("Render Welcome");
+        res.render("welcome", { email: email });
     });
 });
 
@@ -98,12 +98,38 @@ router.get("/sign-out", (req, res) =>
     {
         admin.auth().revokeRefreshTokens(decodedClaims.sub)
     })
-    .then(() =>
-    {
-        res.redirect("/users/sign-in");
-    })
-    .catch((error) =>
-    {
-        res.redirect("/users/sign-in");
-    });
+        .then(() =>
+        {
+            res.redirect("/users/sign-in");
+        })
+        .catch((error) =>
+        {
+            res.redirect("/users/sign-in");
+        });
 });
+
+function create(req, res, next)
+{
+    createUserWithEmailAndPassword(firebaseAuth, req.body.email, req.body.password).then(async (userCredential) =>
+    {
+        const expiresIn = 60 * 60 * 24 * 5 * 1000;
+        const idToken = await userCredential.user.getIdToken();
+
+        admin.auth().createSessionCookie(idToken, { expiresIn }).then((sessionCookie) =>
+        {
+            const options = { maxAge: expiresIn, httpOnly: true };
+            res.cookie("session", sessionCookie, options);
+            next();
+        })
+            .catch((error) =>
+            {
+                console.error("ERROR: " + error);
+            });
+    })
+        .catch((error) =>
+        {
+            const errorCode = error.code;
+            const errorMessage = error.message; console.error("Failed to create user: " + req.body.email);
+            res.status(409); res.render("sign-up", { comment: error.code });
+        });
+}
