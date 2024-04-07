@@ -10,3 +10,5 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } f
 import admin from "firebase-admin"; 
 import * as path from "path"; import { fileURLToPath } from "url"; 
 import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
