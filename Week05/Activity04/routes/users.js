@@ -44,3 +44,9 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true})); 
 router.use(cookieParser()); 
 router.use(upload.array());
+
+// Routes for This Router (all routes /users onwards) 
+router.get('/', (req, res) => 
+{ 
+    res.redirect("/users/welcome"); 
+});
