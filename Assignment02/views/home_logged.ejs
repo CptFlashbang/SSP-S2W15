@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alton Turrets - Home</title>
+    <!-- Link to CSS file for styling -->
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to the Theme Park</h1>
+        <%- include('partials/_navigation.html') %>
+    </header>
+    <main>
+        <section id="order-ticket">
+            <h2>Order a Ticket</h2>
+            <form action="/order-ticket" method="POST">
+                <label for="visit-date">Visit Date:</label>
+                <input type="date" id="visit-date" name="visitDate" required>
+
+                <p>Ticket Cost: £20.00</p>
+                <button type="submit">Order Ticket</button>
+            </form>
+        </section>
+        <section id="add-fast-track">
+            <h2>Add Fast-Track Rides</h2>
+            <form action="/add-fast-track" method="POST">
+                <select name="fastTrackRide" id="fastTrackRide">
+                    <option value="spooksVille">Spooks Ville - £4</option>
+                    <option value="rapidoRacer">Rapido Racer - £6</option>
+                    <option value="bees">Bees - £5.50</option>
+                    <option value="tidalRun">Tidal Run - £3</option>
+                    <option value="rideTheRapids">Ride the Rapids - £1</option>
+                    <option value="theTeacups">The Teacups - £1</option>
+                </select>
+                <button type="submit">Add to Ticket</button>
+            </form>
+        </section>
+        <section id="basket">
+            <h2>Your Basket</h2>
+            <!-- Dynamic content showing the current ticket and selected fast-track rides -->
+            <!-- This will be filled based on the server response or JavaScript -->
+        </section>
+    </main>
+    <%- include('partials/_footer.html') %>
+</body>
+
+</html>
