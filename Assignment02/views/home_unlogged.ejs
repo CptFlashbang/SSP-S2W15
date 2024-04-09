@@ -24,8 +24,8 @@
                     <% for (let i=0; i < rides.length; i++) { %>
                         <section>
                             <h3><%= rides[i].name %></h3>
-                            <p><%= rides[i].fast_track_cost %></p>
-                            <p><%= rides[i].min_height %></p>
+                            <p>Fast track cost: £<%= rides[i].fast_track_cost %></p>
+                            <p>Minimum height: <%= rides[i].min_height %>cm</p>
                         </section>
                     <% } %>
                 </section>
