@@ -19,38 +19,21 @@
     <main>
         <section>
             <h2>Rides and Fast-Track Prices</h2>
-            <ul>
-                <li>
-                    <h3>Spooks Ville</h3>
-                    <p>Fast-track cost: £4</p>
-                    <p>Minimum height: 130cm</p>
-                </li>
-                <li>
-                    <h3>Rapido Racer</h3>
-                    <p>Fast-track cost: £6</p>
-                    <p>Minimum height: 140cm</p>
-                </li>
-                <li>
-                    <h3>Bees</h3>
-                    <p>Fast-track cost: £5.50</p>
-                    <p>Minimum height: 140cm</p>
-                </li>
-                <li>
-                    <h3>Tidal Run</h3>
-                    <p>Fast-track cost: £3</p>
-                    <p>Minimum height: 120cm</p>
-                </li>
-                <li>
-                    <h3>Ride the Rapids</h3>
-                    <p>Fast-track cost: £1</p>
-                    <p>Minimum height: 110cm</p>
-                </li>
-                <li>
-                    <h3>The Teacups</h3>
-                    <p>Fast-track cost: £1</p>
-                    <p>Minimum height: 90cm</p>
-                </li>
-            </ul>
+            <form action="/tokens/buy-tokens" method="post">
+                <section class="rides-list">
+                    <% for (let i=0; i < rides.length; i++) { %>
+                        <section>
+                            <label for="<%= rides[i].name %>">
+                                <h3>
+                                    <%= rides[i].name %>
+                                </h3>
+                            </label>
+                            <input type="checkbox" name="<%= rides[i].name %>" id="id[]">
+                        </section>
+                        <% } %>
+                </section>
+                <input class="product-submit" type="submit" value="Get Rides">
+            </form>
         </section>
     </main>
     <%- include('partials/_footer.html') %>
