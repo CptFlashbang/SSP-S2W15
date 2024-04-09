@@ -46,11 +46,6 @@ router.use(cookieParser());
 router.use(upload.array());
 
 // Routes for This Router (all routes /users onwards) 
-router.get('/', (req, res) =>
-{
-    res.redirect("/users/welcome");
-});
-
 router.get('/sign-in', (req, res) =>
 {
     res.render("sign-in");
@@ -59,7 +54,7 @@ router.get('/sign-in', (req, res) =>
 router.post('/sign-in', (req, res) =>
 {
     res.status(200)
-    res.redirect("/users/welcome");
+    res.redirect("/home_logged");
 });
 
 router.get('/sign-up', (req, res) =>
@@ -71,20 +66,7 @@ router.get('/sign-up', (req, res) =>
 router.post('/sign-up', create, (req, res) =>
 {
     res.status(201);
-    res.redirect("/users/welcome");
-});
-
-router.get("/welcome", allowed, (req, res) =>
-{
-    // Now supports sessions!
-    admin.auth().getUser(res.locals.uid).then((userRecord) =>
-    {
-        // Local Variables
-        const email = userRecord.email;
-
-        console.log("Render Welcome");
-        res.render("welcome", { email: email });
-    });
+    res.redirect("/home_logged");
 });
 
 router.post("/sign-out", (req, res) =>
