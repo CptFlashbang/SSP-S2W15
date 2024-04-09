@@ -5,6 +5,7 @@ import * as path from "path";
 import { fileURLToPath } from "url";
 import userRouter from "./routes/users.js";
 import ticketsRouter from "./routes/tickets.js";
+import db from "./db/connection.js";
 
 // Application Objects
 const __filename = fileURLToPath(import.meta.url);
@@ -26,9 +27,11 @@ app.use("/users", userRouter);
 app.use("/tickets", ticketsRouter);
 
 // ROUTES ---------------------------------------------------------------------
-app.get("/", (req, res) =>
-{
-    res.render("home_unlogged");
+app.get('/', async (req, res) => {
+    // Local Variables 
+    let collection = await db.collection("Rides");
+    let results = await collection.find({}).toArray();
+    res.render("home_unlogged", { rides: results });
 });
 
 // START SERVER --------------------------------------------------------------
