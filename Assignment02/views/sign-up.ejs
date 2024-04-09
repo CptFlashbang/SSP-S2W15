@@ -8,36 +8,36 @@
 </head>
 
 <body>
-        <main>
-            <section>
-                <h1>Sign in</h1>
-                <p>Please sign up with the form below</p>
-            </section>
-            <form id="signup-form" action="/users/sign-up" class="signup-user-form" method="post">
-                <fieldset class="signup-user-form-area">
-                    <label for="email">Email Address</label>
-                    <input id="email" autocomplete="email" name="email" required type="text"></input>
-                </fieldset>
-                <fieldset class="signup-user-form-area">
-                    <label for="password">Password</label>
-                    <input id="password" autocomplete="current-password" minlength="6" name="password" required
-                        type="password"></input>
-                    <p>Password must be at least 6 characters</p>
-                </fieldset>
-                <input id="signup" disabled type="submit" value="Sign up ⛳"></input>
-            </form>
-            <script>
-                // Script Const
-                const formCont = document.getElementById("signup-form");
-                // Validity Listener
-                formCont.addEventListener("change", () => {
-                    // Local Variable
-                    let signupBtn = document.getElementById("signup");
-                    signupBtn.disabled = !formCont.checkValidity();
-                });
-            </script>
-        </main>
-        <%- include('partials/_footer.html') %>
+    <main>
+        <section>
+            <h1>Sign in</h1>
+            <p>Please sign up with the form below</p>
+        </section>
+        <form id="signup-form" action="/users/sign-up" class="signup-user-form" method="post">
+            <fieldset class="signup-user-form-area">
+                <label for="email">Email Address</label>
+                <input id="email" autocomplete="email" name="email" required type="text"></input>
+            </fieldset>
+            <fieldset class="signup-user-form-area">
+                <label for="password">Password</label>
+                <input id="password" autocomplete="current-password" minlength="6" name="password" required
+                    type="password"></input>
+                <p>Password must be at least 6 characters</p>
+            </fieldset>
+            <input id="signup" disabled type="submit" value="Sign up ⛳"></input>
+        </form>
+        <script>
+            // Script Const
+            const formCont = document.getElementById("signup-form");
+            // Validity Listener
+            formCont.addEventListener("change", () => {
+                // Local Variable
+                let signupBtn = document.getElementById("signup");
+                signupBtn.disabled = !formCont.checkValidity();
+            });
+        </script>
+    </main>
+    <%- include('partials/_footer.html') %>
 </body>
 
 </html>
