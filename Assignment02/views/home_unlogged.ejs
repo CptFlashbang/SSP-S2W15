@@ -19,18 +19,19 @@
     <main>
         <section>
             <h2>Rides and Fast-Track Prices</h2>
-            <form action="/tokens/buy-tokens" method="post">
-                <section class="rides-list">
-                    <% for (let i=0; i < rides.length; i++) { %>
-                        <section>
-                            <h3><%= rides[i].name %></h3>
-                            <p>Fast track cost: £<%= rides[i].fast_track_cost %></p>
-                            <p>Minimum height: <%= rides[i].min_height %>cm</p>
-                        </section>
+            <section class="rides-list">
+                <% for (let i=0; i < rides.length; i++) { %>
+                    <section>
+                        <h3>
+                            <%= rides[i].name %>
+                        </h3>
+                        <p>Fast track cost: £<%= rides[i].fast_track_cost %>
+                        </p>
+                        <p>Minimum height: <%= rides[i].min_height %>cm</p>
+                    </section>
                     <% } %>
-                </section>
-                <input class="product-submit" type="submit" value="Get Rides">
-            </form>
+            </section>
+
         </section>
     </main>
     <%- include('partials/_footer.html') %>
