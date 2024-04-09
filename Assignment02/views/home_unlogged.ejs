@@ -23,14 +23,11 @@
                 <section class="rides-list">
                     <% for (let i=0; i < rides.length; i++) { %>
                         <section>
-                            <label for="<%= rides[i].name %>">
-                                <h3>
-                                    <%= rides[i].name %>
-                                </h3>
-                            </label>
-                            <input type="checkbox" name="<%= rides[i].name %>" id="id[]">
+                            <h3><%= rides[i].name %></h3>
+                            <p><%= rides[i].fast_track_cost %></p>
+                            <p><%= rides[i].min_height %></p>
                         </section>
-                        <% } %>
+                    <% } %>
                 </section>
                 <input class="product-submit" type="submit" value="Get Rides">
             </form>
