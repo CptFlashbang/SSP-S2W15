@@ -4,6 +4,7 @@ import express from "express";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import userRouter from "./routes/users.js";
+import ticketsRouterRouter from "./routes/tickets.js";
 
 // Application Objects
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname,"public")));
 
 // ROUTERS -------------------------------------------------------------------
 app.use("/users", userRouter);
+app.use("/tickets", ticketsRouter);
 
 // ROUTES ---------------------------------------------------------------------
 app.get("/", (req, res) =>
