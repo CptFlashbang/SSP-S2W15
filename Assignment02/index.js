@@ -31,7 +31,16 @@ app.get('/', async (req, res) => {
     // Local Variables 
     let collection = await db.collection("Rides");
     let results = await collection.find({}).toArray();
-    res.render("home_unlogged", { rides: results });
+    const ridesList = results.map(ride => {
+        return {
+            id: ride._id,
+            name: ride.name,
+            fastTrackPrice: ride.fastTrackPrice,
+            minHeight: ride.minHeight
+        };
+    });
+
+    res.render("home_unlogged", { rides: ridesList });
 });
 
 // START SERVER --------------------------------------------------------------
