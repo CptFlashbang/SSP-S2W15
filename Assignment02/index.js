@@ -35,8 +35,8 @@ app.get('/', async (req, res) => {
         return {
             id: ride._id,
             name: ride.name,
-            fastTrackPrice: ride.fastTrackPrice,
-            minHeight: ride.minHeight
+            fast_track_cost: ride.fast_track_cost,
+            min_height: ride.min_height
         };
     });
 
@@ -51,8 +51,8 @@ app.get('/home_logged', async (req, res) => {
         return {
             id: ride._id,
             name: ride.name,
-            fastTrackPrice: ride.fastTrackPrice,
-            minHeight: ride.minHeight
+            fast_track_cost: ride.fast_track_cost,
+            min_height: ride.min_height
         };
     });
 
