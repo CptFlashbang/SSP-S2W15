@@ -43,6 +43,22 @@ app.get('/', async (req, res) => {
     res.render("home_unlogged", { ridesList: ridesList });
 });
 
+app.get('/home_logged', async (req, res) => {
+    // Local Variables 
+    let collection = await db.collection("Rides");
+    let results = await collection.find({}).toArray();
+    const ridesList = results.map(ride => {
+        return {
+            id: ride._id,
+            name: ride.name,
+            fastTrackPrice: ride.fastTrackPrice,
+            minHeight: ride.minHeight
+        };
+    });
+
+    res.render("home_logged", { ridesList: ridesList });
+});
+
 // START SERVER --------------------------------------------------------------
 const PORT = process.env.PORT || 2319;
 app.listen(PORT, () => 
