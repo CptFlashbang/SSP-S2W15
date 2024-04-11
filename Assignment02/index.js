@@ -40,7 +40,7 @@ app.get('/', async (req, res) => {
         };
     });
 
-    res.render("home_unlogged", { rides: ridesList });
+    res.render("home_unlogged", { ridesList: ridesList });
 });
 
 // START SERVER --------------------------------------------------------------
