@@ -25,17 +25,16 @@
             </form>
         </section>
         <section class="rides-list">
-            <% for (let i=0; i < rides.length; i++) { %>
+            <% for (let ride of ridesList) { %>
                 <section>
                     <h3>
-                        <%= rides[i].name %>
+                        <%= ride.name %>
                     </h3>
-                    <p>Fast track cost: £<%= rides[i].fast_track_cost %>
-                    </p>
-                    <p>Minimum height: <%= rides[i].min_height %>cm</p>
-                    <button data-ride-id="<%= rides[i].id %>">Add Fast Track</button>
+                    <p>Fast track cost: £<%= ride.fast_track_cost %></p>
+                    <p>Minimum height: <%= ride.min_height %>cm</p>
+                    <button data-ride-id="<%= ride.id %>">Add Fast Track</button>
                 </section>
-                <% } %>
+            <% } %>
         </section>
         <section id="basket">
             <h2>Your Basket</h2>
