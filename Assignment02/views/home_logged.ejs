@@ -24,19 +24,17 @@
                 <button type="submit">Order Ticket</button>
             </form>
         </section>
-        <section id="add-fast-track">
-            <h2>Add Fast-Track Rides</h2>
-            <form action="/add-fast-track" method="POST">
-                <select name="fastTrackRide" id="fastTrackRide">
-                    <option value="spooksVille">Spooks Ville - £4</option>
-                    <option value="rapidoRacer">Rapido Racer - £6</option>
-                    <option value="bees">Bees - £5.50</option>
-                    <option value="tidalRun">Tidal Run - £3</option>
-                    <option value="rideTheRapids">Ride the Rapids - £1</option>
-                    <option value="theTeacups">The Teacups - £1</option>
-                </select>
-                <button type="submit">Add to Ticket</button>
-            </form>
+        <section class="rides-list">
+            <% for (let i=0; i < rides.length; i++) { %>
+                <section>
+                    <h3>
+                        <%= rides[i].name %>
+                    </h3>
+                    <p>Fast track cost: £<%= rides[i].fast_track_cost %>
+                    </p>
+                    <p>Minimum height: <%= rides[i].min_height %>cm</p>
+                </section>
+                <% } %>
         </section>
         <section id="basket">
             <h2>Your Basket</h2>
