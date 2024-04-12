@@ -59,6 +59,12 @@ app.get('/home_logged', async (req, res) => {
     res.render("home_logged", { ridesList: ridesList });
 });
 
+app.post('/checkout', (req, res) => {
+    const basket = req.body;
+    console.log('Received basket:', basket);    
+    res.json({ status: 'success', message: 'Checkout processed' });
+});
+
 // START SERVER --------------------------------------------------------------
 const PORT = process.env.PORT || 2319;
 app.listen(PORT, () => 

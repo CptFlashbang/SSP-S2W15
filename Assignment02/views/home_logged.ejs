@@ -32,7 +32,7 @@
                     </article>
                 <% } %>
             </section>
-            <button type="submit">Order and Checkout</button>
+            <button type="submit" disabled id="submit-button">Order and Checkout</button>
         </form>
         <section id="basket">
             <h2>Your Basket</h2>
@@ -42,7 +42,22 @@
     <%- include('partials/_footer.html') %>
 
     <script>
-        document.getElementById('orderTicketForm').addEventListener('submit', function(event) {
+        const orderForm = document.getElementById('orderTicketForm');
+        const visitDateInput = document.getElementById('visitDate');
+        const submitButton = document.getElementById('submit-button');
+
+        visitDateInput.addEventListener('change', () => {
+            const selectedDate = new Date(visitDateInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);  // Reset time part to ensure correct day comparison
+            if (selectedDate >= today) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
+
+        orderForm.addEventListener('submit', function(event) {
             event.preventDefault();
             const formData = new FormData(this);
             const visitDate = formData.get('visitDate');
