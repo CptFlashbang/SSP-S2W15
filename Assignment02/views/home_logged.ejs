@@ -15,7 +15,8 @@
             <section>
                 <h2>Order a Ticket</h2>
                 <label for="visitDate">Visit Date:</label>
-                <input type="date" id="visitDate" name="visitDate" required>
+                <!-- Set min attribute to today's date for the input -->
+                <input type="date" id="visitDate" name="visitDate" required min="<%= new Date().toISOString().split('T')[0] %>">
                 <p>Ticket Cost: £20.00</p>
             </section>
             <section class="rides-list">
