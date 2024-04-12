@@ -40,6 +40,12 @@
             <h2>Your Basket</h2>
             <script>
                 const orderTicketForm = document.querySelector('#orderTicketForm');
+
+                orderTicketForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const visitDate = orderTicketForm.querySelector('#visitDate').value;
+                    console.log(visitDate);
+                });
             </script>
             
             <button id="checkout-button" type="button">Checkout</button>
