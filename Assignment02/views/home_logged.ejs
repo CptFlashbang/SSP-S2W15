@@ -40,11 +40,16 @@
             <h2>Your Basket</h2>
             <script>
                 const orderTicketForm = document.querySelector('#orderTicketForm');
+                let basket = [];
 
                 orderTicketForm.addEventListener('submit', (event) => {
                     event.preventDefault();
                     const visitDate = orderTicketForm.querySelector('#visitDate').value;
-                    console.log(visitDate);
+                    basket.push({
+                        date: visitDate,
+                        fastPasses: []
+                    });
+                    console.log(basket);
                 });
             </script>
             
