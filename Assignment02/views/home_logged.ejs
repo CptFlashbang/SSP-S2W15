@@ -42,6 +42,7 @@
             <script>
                 const orderTicketForm = document.querySelector('#orderTicketForm');
                 const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
+                const basketDiv = document.getElementById('basket');
                 let basket = [];
 
                 orderTicketForm.addEventListener('submit', (event) => {
@@ -72,7 +73,6 @@
                 });
 
                 function updateBasketDisplay() {
-                    const basketDiv = document.getElementById('basket');
                     basketDiv.innerHTML = '<h2>Your Basket</h2>';
                     basket.forEach(order => {
                         let orderContent = `<div class="ticket-container">`;
@@ -86,13 +86,29 @@
                             orderContent += '</ul>';
                         }
                         orderContent += '</div>';
+                        orderContent += '<button id="checkout-button" type="button">Checkout</button>';
                         basketDiv.innerHTML += orderContent;
                     });
                 }
+                const checkoutButton = document.getElementById('checkout-button');
+                checkoutButton.addEventListener('click', function () {
+                    fetch('/checkout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(basket)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Checkout successful:', data);
+                        })
+                        .catch(error => {
+                            console.error('Checkout failed:', error);
+                        });
+                });
 
             </script>
-
-            <button id="checkout-button" type="button">Checkout</button>
         </section>
     </main>
     <%- include('partials/_footer.html') %>
