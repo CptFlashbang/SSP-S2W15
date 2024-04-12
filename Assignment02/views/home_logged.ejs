@@ -1,118 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alton Turrets - Home</title>
-    <!-- Link to CSS file for styling -->
 </head>
-
 <body>
     <header>
         <h1>Welcome to the Theme Park</h1>
         <%- include('partials/_navigation.html') %>
     </header>
     <main>
-        <section>
-            <h2>Order a Ticket</h2>
-            <form id="orderTicketForm">
+        <form id="orderTicketForm">
+            <section>
+                <h2>Order a Ticket</h2>
                 <label for="visitDate">Visit Date:</label>
                 <input type="date" id="visitDate" name="visitDate" required>
-
                 <p>Ticket Cost: £20.00</p>
-                <button type="submit">Order Ticket</button>
-            </form>
-        </section>
-        <section class="rides-list">
-            <% for (let ride of ridesList) { %>
-                <section id="<%= ride.id %>">
-                    <h3>
-                        <%= ride.name %>
-                    </h3>
-                    <p>Fast track cost: £<%= ride.fast_track_cost %>
-                    </p>
-                    <p>Minimum height: <%= ride.min_height %>cm</p>
-                    <input type="checkbox" id="<%= ride.name %>" dataRideName="<%= ride.name %>">
-                </section>
+            </section>
+            <section class="rides-list">
+                <% for (let ride of ridesList) { %>
+                    <article id="<%= ride.id %>">
+                        <h3><%= ride.name %></h3>
+                        <p>Fast track cost: £<%= ride.fast_track_cost %></p>
+                        <p>Minimum height: <%= ride.min_height %>cm</p>
+                        <label>
+                            <input type="checkbox" name="fastPasses" value="<%= ride.name %>">
+                            Select Fast Pass
+                        </label>
+                    </article>
                 <% } %>
-        </section>
+            </section>
+            <button type="submit">Order and Checkout</button>
+        </form>
         <section id="basket">
             <h2>Your Basket</h2>
             <div id="ticketsDiv"></div>
-            <button id="checkout-button" type="button">Checkout</button>
-            <script>
-                const orderTicketForm = document.querySelector('#orderTicketForm');
-                const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
-                const ticketsDiv = document.getElementById('ticketsDiv');
-                const checkoutButton = document.getElementById('checkout-button');
-                let basket = [];
-
-                orderTicketForm.addEventListener('submit', (event) => {
-                    event.preventDefault();
-                    const visitDate = orderTicketForm.querySelector('#visitDate').value;
-                    basket.push({
-                        date: visitDate,
-                        fastPasses: []
-                    });
-                    updateBasketDisplay();
-                    rideCheckboxes.forEach(checkbox => {
-                        checkbox.checked = false;
-                    });
-                });
-
-                rideCheckboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', function () {
-                        const rideName = this.getAttribute('dataRideName');
-                        if (this.checked)
-                        {
-                            basket[basket.length - 1].fastPasses.push(rideName);
-                        } else
-                        {
-                            basket[basket.length - 1].fastPasses = basket[basket.length - 1].fastPasses.filter(name => name !== rideName);
-                        }
-                        updateBasketDisplay();
-                    });
-                });
-
-                function updateBasketDisplay() {
-                    basket.forEach(order => {
-                        let orderContent = `<div class="ticket-container">`;
-                        orderContent += `<p>Ticket for ${order.date}</p>`;
-                        if (order.fastPasses.length > 0)
-                        {
-                            orderContent += '<ul>';
-                            order.fastPasses.forEach(ride => {
-                                orderContent += `<li>Fast Track Ride: ${ride}</li>`;
-                            });
-                            orderContent += '</ul>';
-                        }
-                        orderContent += '</div>';
-                        // orderContent += '<button id="checkout-button" type="button">Checkout</button>';
-                        ticketsDiv.innerHTML += orderContent;
-                    })
-                };
-
-                checkoutButton.addEventListener('click', function () {
-                    fetch('/checkout', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(basket)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Checkout successful:', data);
-                        })
-                        .catch(error => {
-                            console.error('Checkout failed:', error);
-                        });
-                });
-            </script>
         </section>
     </main>
     <%- include('partials/_footer.html') %>
-</body>
 
+    <script>
+        document.getElementById('orderTicketForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const visitDate = formData.get('visitDate');
+            const fastPasses = formData.getAll('fastPasses');
+
+            const order = {
+                date: visitDate,
+                fastPasses: fastPasses
+            };
+
+            fetch('/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(order)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Checkout successful:', data);
+                updateBasketDisplay(order);
+            })
+            .catch(error => {
+                console.error('Checkout failed:', error);
+            });
+        });
+
+        function updateBasketDisplay(order) {
+            const ticketsDiv = document.getElementById('ticketsDiv');
+            let orderContent = `<div class="ticket-container"><p>Ticket for ${order.date}</p>`;
+            if (order.fastPasses.length) {
+                orderContent += '<ul>';
+                order.fastPasses.forEach(ride => {
+                    orderContent += `<li>Fast Track Ride: ${ride}</li>`;
+                });
+                orderContent += '</ul>';
+            }
+            orderContent += '</div>';
+            ticketsDiv.innerHTML = orderContent;
+        }
+    </script>
+</body>
 </html>
