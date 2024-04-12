@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alton Turrets - Home</title>
 </head>
+
 <body>
     <header>
         <h1>Welcome to the Theme Park</h1>
@@ -15,105 +17,114 @@
             <section>
                 <h2>Order a Ticket</h2>
                 <label for="visitDate">Visit Date:</label>
-                <input type="date" id="visitDate" name="visitDate" required min="<%= new Date().toISOString().split('T')[0] %>">
+                <input type="date" id="visitDate" name="visitDate" required
+                    min="<%= new Date().toISOString().split('T')[0] %>">
             </section>
             <section class="rides-list">
                 <% for (let ride of ridesList) { %>
                     <article id="<%= ride.id %>">
-                        <h3><%= ride.name %></h3>
-                        <p>Fast track cost: £<%= ride.fast_track_cost %></p>
+                        <h3>
+                            <%= ride.name %>
+                        </h3>
+                        <p>Fast track cost: £<%= ride.fast_track_cost %>
+                        </p>
                         <p>Minimum height: <%= ride.min_height %>cm</p>
                         <label>
-                            <input type="checkbox" name="fastPasses" value="<%= ride.name %>" data-cost="<%= ride.fast_track_cost %>">
+                            <input type="checkbox" name="fastPasses" value="<%= ride.name %>"
+                                data-cost="<%= ride.fast_track_cost %>">
                             Select Fast Pass
                         </label>
                     </article>
-                <% } %>
+                    <% } %>
             </section>
             <p id="totalCost">Ticket Cost: £20.00</p>
             <button type="submit" disabled id="submit-button">Order and Checkout</button>
         </form>
-        <section id="basket">
+        <!-- <section id="basket">
             <h2>Your Basket</h2>
             <div id="ticketsDiv"></div>
-        </section>
+        </section> -->
     </main>
     <%- include('partials/_footer.html') %>
 
-    <script>
-        const orderForm = document.getElementById('orderTicketForm');
-        const visitDateInput = document.getElementById('visitDate');
-        const submitButton = document.getElementById('submit-button');
-        const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
-        const totalCostElement = document.getElementById('totalCost');
-        const baseTicketPrice = 20;
+        <script>
+            const orderForm = document.getElementById('orderTicketForm');
+            const visitDateInput = document.getElementById('visitDate');
+            const submitButton = document.getElementById('submit-button');
+            const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
+            const totalCostElement = document.getElementById('totalCost');
+            const baseTicketPrice = 20;
 
-        function updateTotalCost() {
-            let totalCost = baseTicketPrice;
-            rideCheckboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    totalCost += parseFloat(checkbox.getAttribute('data-cost'));
+            function updateTotalCost() {
+                let totalCost = baseTicketPrice;
+                rideCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked)
+                    {
+                        totalCost += parseFloat(checkbox.getAttribute('data-cost'));
+                    }
+                });
+                totalCostElement.textContent = `Ticket Cost: £${totalCost.toFixed(2)}`;
+            }
+
+            visitDateInput.addEventListener('change', () => {
+                const selectedDate = new Date(visitDateInput.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0); // Reset time part to ensure correct day comparison
+                if (selectedDate >= today)
+                {
+                    submitButton.disabled = false;
+                } else
+                {
+                    submitButton.disabled = true;
                 }
             });
-            totalCostElement.textContent = `Ticket Cost: £${totalCost.toFixed(2)}`;
-        }
 
-        visitDateInput.addEventListener('change', () => {
-            const selectedDate = new Date(visitDateInput.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Reset time part to ensure correct day comparison
-            if (selectedDate >= today) {
-                submitButton.disabled = false;
-            } else {
-                submitButton.disabled = true;
-            }
-        });
-
-        rideCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateTotalCost);
-        });
-
-        orderForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const formData = new FormData(this);
-            const visitDate = formData.get('visitDate');
-            const fastPasses = formData.getAll('fastPasses');
-
-            const order = {
-                date: visitDate,
-                fastPasses: fastPasses
-            };
-
-            fetch('/checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(order)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Checkout successful:', data);
-                updateBasketDisplay(order);
-            })
-            .catch(error => {
-                console.error('Checkout failed:', error);
+            rideCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateTotalCost);
             });
-        });
 
-        function updateBasketDisplay(order) {
-            const ticketsDiv = document.getElementById('ticketsDiv');
-            let orderContent = `<div class="ticket-container"><p>Ticket for ${order.date}</p>`;
-            if (order.fastPasses.length) {
-                orderContent += '<ul>';
-                order.fastPasses.forEach(ride => {
-                    orderContent += `<li>Fast Track Ride: ${ride}</li>`;
-                });
-                orderContent += '</ul>';
-            }
-            orderContent += '</div>';
-            ticketsDiv.innerHTML = orderContent;
-        }
-    </script>
+            orderForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const formData = new FormData(this);
+                const visitDate = formData.get('visitDate');
+                const fastPasses = formData.getAll('fastPasses');
+
+                const order = {
+                    date: visitDate,
+                    fastPasses: fastPasses
+                };
+
+                fetch('/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(order)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Checkout successful:', data);
+                        // updateBasketDisplay(order);
+                    })
+                    .catch(error => {
+                        console.error('Checkout failed:', error);
+                    });
+            });
+
+        // function updateBasketDisplay(order) {
+        //     const ticketsDiv = document.getElementById('ticketsDiv');
+        //     let orderContent = `<div class="ticket-container"><p>Ticket for ${order.date}</p>`;
+        //     if (order.fastPasses.length) {
+        //         orderContent += '<ul>';
+        //         order.fastPasses.forEach(ride => {
+        //             orderContent += `<li>Fast Track Ride: ${ride}</li>`;
+        //         });
+        //         orderContent += '</ul>';
+        //     }
+        //     orderContent += '</div>';
+        //     ticketsDiv.innerHTML = orderContent;
+        // }
+        </script>
 </body>
+
 </html>
