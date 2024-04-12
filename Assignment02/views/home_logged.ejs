@@ -30,16 +30,18 @@
                     <h3>
                         <%= ride.name %>
                     </h3>
-                    <p>Fast track cost: £<%= ride.fast_track_cost %></p>
+                    <p>Fast track cost: £<%= ride.fast_track_cost %>
+                    </p>
                     <p>Minimum height: <%= ride.min_height %>cm</p>
-                    <input type="checkbox" id="<%= ride.name %>" data-ride-id="<%= ride.id %>">
+                    <input type="checkbox" id="<%= ride.name %>" dataRideName="<%= ride.name %>">
                 </section>
-            <% } %>
+                <% } %>
         </section>
         <section id="basket">
             <h2>Your Basket</h2>
             <script>
                 const orderTicketForm = document.querySelector('#orderTicketForm');
+                const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
                 let basket = [];
 
                 orderTicketForm.addEventListener('submit', (event) => {
@@ -51,8 +53,23 @@
                     });
                     console.log(basket);
                 });
+
+                rideCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function () {
+                        const rideName = this.getAttribute('dataRideName');
+                        if (this.checked)
+                        {
+                            basket[basket.length - 1].fastPasses.push(rideName);
+                        } else
+                        {
+                            basket[basket.length - 1].fastPasses = basket[basket.length - 1].fastPasses.filter(name => name !== rideName);
+                        }
+                        updateBasketDisplay();
+                    });
+                });
+
             </script>
-            
+
             <button id="checkout-button" type="button">Checkout</button>
         </section>
     </main>
