@@ -15,9 +15,7 @@
             <section>
                 <h2>Order a Ticket</h2>
                 <label for="visitDate">Visit Date:</label>
-                <!-- Set min attribute to today's date for the input -->
                 <input type="date" id="visitDate" name="visitDate" required min="<%= new Date().toISOString().split('T')[0] %>">
-                <p>Ticket Cost: £20.00</p>
             </section>
             <section class="rides-list">
                 <% for (let ride of ridesList) { %>
@@ -26,12 +24,13 @@
                         <p>Fast track cost: £<%= ride.fast_track_cost %></p>
                         <p>Minimum height: <%= ride.min_height %>cm</p>
                         <label>
-                            <input type="checkbox" name="fastPasses" value="<%= ride.name %>">
+                            <input type="checkbox" name="fastPasses" value="<%= ride.name %>" data-cost="<%= ride.fast_track_cost %>">
                             Select Fast Pass
                         </label>
                     </article>
                 <% } %>
             </section>
+            <p id="totalCost">Ticket Cost: £20.00</p>
             <button type="submit" disabled id="submit-button">Order and Checkout</button>
         </form>
         <section id="basket">
@@ -45,16 +44,33 @@
         const orderForm = document.getElementById('orderTicketForm');
         const visitDateInput = document.getElementById('visitDate');
         const submitButton = document.getElementById('submit-button');
+        const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
+        const totalCostElement = document.getElementById('totalCost');
+        const baseTicketPrice = 20;
+
+        function updateTotalCost() {
+            let totalCost = baseTicketPrice;
+            rideCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    totalCost += parseFloat(checkbox.getAttribute('data-cost'));
+                }
+            });
+            totalCostElement.textContent = `Ticket Cost: £${totalCost.toFixed(2)}`;
+        }
 
         visitDateInput.addEventListener('change', () => {
             const selectedDate = new Date(visitDateInput.value);
             const today = new Date();
-            today.setHours(0, 0, 0, 0);  // Reset time part to ensure correct day comparison
+            today.setHours(0, 0, 0, 0); // Reset time part to ensure correct day comparison
             if (selectedDate >= today) {
                 submitButton.disabled = false;
             } else {
                 submitButton.disabled = true;
             }
+        });
+
+        rideCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateTotalCost);
         });
 
         orderForm.addEventListener('submit', function(event) {
