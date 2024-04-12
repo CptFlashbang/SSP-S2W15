@@ -73,20 +73,21 @@
 
                 function updateBasketDisplay() {
                     const basketDiv = document.getElementById('basket');
-                    basketDiv.innerHTML = '<h2>Your Basket</h2><ul>';
+                    basketDiv.innerHTML = '<h2>Your Basket</h2>';
                     basket.forEach(order => {
-                        basketDiv.innerHTML += `<li>Ticket for ${order.date}:`;
+                        let orderContent = `<div class="ticket-container">`;
+                        orderContent += `<p>Ticket for ${order.date}</p>`;
                         if (order.fastPasses.length > 0)
                         {
-                            basketDiv.innerHTML += '<ul>';
+                            orderContent += '<ul>';
                             order.fastPasses.forEach(ride => {
-                                basketDiv.innerHTML += `<li>Fast Track Ride: ${ride}</li>`;
+                                orderContent += `<li>Fast Track Ride: ${ride}</li>`;
                             });
-                            basketDiv.innerHTML += '</ul>';
+                            orderContent += '</ul>';
                         }
-                        basketDiv.innerHTML += '</li>';
+                        orderContent += '</div>';
+                        basketDiv.innerHTML += orderContent;
                     });
-                    basketDiv.innerHTML += '</ul>';
                 }
 
             </script>
