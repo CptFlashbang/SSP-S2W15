@@ -51,7 +51,7 @@
                         date: visitDate,
                         fastPasses: []
                     });
-                    console.log(basket);
+                    updateBasketDisplay();
                 });
 
                 rideCheckboxes.forEach(checkbox => {
@@ -67,6 +67,24 @@
                         updateBasketDisplay();
                     });
                 });
+
+                function updateBasketDisplay() {
+                    const basketDiv = document.getElementById('basket');
+                    basketDiv.innerHTML = '<h2>Your Basket</h2><ul>';
+                    basket.forEach(order => {
+                        basketDiv.innerHTML += `<li>Ticket for ${order.date}:`;
+                        if (order.fastPasses.length > 0)
+                        {
+                            basketDiv.innerHTML += '<ul>';
+                            order.fastPasses.forEach(ride => {
+                                basketDiv.innerHTML += `<li>Fast Track Ride: ${ride}</li>`;
+                            });
+                            basketDiv.innerHTML += '</ul>';
+                        }
+                        basketDiv.innerHTML += '</li>';
+                    });
+                    basketDiv.innerHTML += '</ul>';
+                }
 
             </script>
 
