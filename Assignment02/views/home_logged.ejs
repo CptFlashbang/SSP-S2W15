@@ -14,9 +14,9 @@
         <%- include('partials/_navigation.html') %>
     </header>
     <main>
-        <section id="order-ticket">
+        <section id="">
             <h2>Order a Ticket</h2>
-            <form action="/order-ticket" method="POST">
+            <form id="order-ticket">
                 <label for="visit-date">Visit Date:</label>
                 <input type="date" id="visit-date" name="visitDate" required>
 
@@ -40,6 +40,7 @@
             <h2>Your Basket</h2>
             <!-- Dynamic content showing the current ticket and selected fast-track rides -->
             <!-- This will be filled based on the server response or JavaScript -->
+            
             <button type="submit">Checkout</button>
         </section>
     </main>
