@@ -52,6 +52,9 @@
                         fastPasses: []
                     });
                     updateBasketDisplay();
+                    rideCheckboxes.forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
                 });
 
                 rideCheckboxes.forEach(checkbox => {
