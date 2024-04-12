@@ -40,77 +40,77 @@
         <section id="basket">
             <h2>Your Basket</h2>
             <div id="ticketsDiv">
-            <script>
-                const orderTicketForm = document.querySelector('#orderTicketForm');
-                const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
-                const basketDiv = document.getElementById('basket');
-                let basket = [];
+                <script>
+                    const orderTicketForm = document.querySelector('#orderTicketForm');
+                    const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
+                    const ticketsDiv = document.getElementById('ticketsDiv');                    
+                    const checkoutButton = document.getElementById('checkout-button');
+                    let basket = [];
 
-                orderTicketForm.addEventListener('submit', (event) => {
-                    event.preventDefault();
-                    const visitDate = orderTicketForm.querySelector('#visitDate').value;
-                    basket.push({
-                        date: visitDate,
-                        fastPasses: []
-                    });
-                    updateBasketDisplay();
-                    rideCheckboxes.forEach(checkbox => {
-                        checkbox.checked = false;
-                    });
-                });
-
-                rideCheckboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', function () {
-                        const rideName = this.getAttribute('dataRideName');
-                        if (this.checked)
-                        {
-                            basket[basket.length - 1].fastPasses.push(rideName);
-                        } else
-                        {
-                            basket[basket.length - 1].fastPasses = basket[basket.length - 1].fastPasses.filter(name => name !== rideName);
-                        }
-                        updateBasketDisplay();
-                    });
-                });
-
-                function updateBasketDisplay() {
-                    basketDiv.innerHTML = '<h2>Your Basket</h2>';
-                    basket.forEach(order => {
-                        let orderContent = `<div class="ticket-container">`;
-                        orderContent += `<p>Ticket for ${order.date}</p>`;
-                        if (order.fastPasses.length > 0)
-                        {
-                            orderContent += '<ul>';
-                            order.fastPasses.forEach(ride => {
-                                orderContent += `<li>Fast Track Ride: ${ride}</li>`;
-                            });
-                            orderContent += '</ul>';
-                        }
-                        orderContent += '</div>';
-                        orderContent += '<button id="checkout-button" type="button">Checkout</button>';
-                        basketDiv.innerHTML += orderContent;
-                    });
-                }
-                const checkoutButton = document.getElementById('checkout-button');
-                checkoutButton.addEventListener('click', function () {
-                    fetch('/checkout', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(basket)
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Checkout successful:', data);
-                        })
-                        .catch(error => {
-                            console.error('Checkout failed:', error);
+                    orderTicketForm.addEventListener('submit', (event) => {
+                        event.preventDefault();
+                        const visitDate = orderTicketForm.querySelector('#visitDate').value;
+                        basket.push({
+                            date: visitDate,
+                            fastPasses: []
                         });
-                });
+                        updateBasketDisplay();
+                        rideCheckboxes.forEach(checkbox => {
+                            checkbox.checked = false;
+                        });
+                    });
 
-            </script>
+                    rideCheckboxes.forEach(checkbox => {
+                        checkbox.addEventListener('change', function () {
+                            const rideName = this.getAttribute('dataRideName');
+                            if (this.checked)
+                            {
+                                basket[basket.length - 1].fastPasses.push(rideName);
+                            } else
+                            {
+                                basket[basket.length - 1].fastPasses = basket[basket.length - 1].fastPasses.filter(name => name !== rideName);
+                            }
+                            updateBasketDisplay();
+                        });
+                    });
+
+                    function updateBasketDisplay() {
+                        basket.forEach(order => {
+                            let orderContent = `<div class="ticket-container">`;
+                            orderContent += `<p>Ticket for ${order.date}</p>`;
+                            if (order.fastPasses.length > 0)
+                            {
+                                orderContent += '<ul>';
+                                order.fastPasses.forEach(ride => {
+                                    orderContent += `<li>Fast Track Ride: ${ride}</li>`;
+                                });
+                                orderContent += '</ul>';
+                            }
+                            orderContent += '</div>';
+                            // orderContent += '<button id="checkout-button" type="button">Checkout</button>';
+                            ticketsDiv.innerHTML += orderContent;
+                        });
+                    }
+                    checkoutButton.addEventListener('click', function () {
+                        fetch('/checkout', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(basket)
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Checkout successful:', data);
+                            })
+                            .catch(error => {
+                                console.error('Checkout failed:', error);
+                            });
+                    });
+
+                </script>
             </div>
+            <button id="checkout-button" type="button">Checkout</button>
         </section>
     </main>
     <%- include('partials/_footer.html') %>
