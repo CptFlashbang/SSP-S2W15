@@ -20,7 +20,7 @@
                 <input type="date" id="visitDate" name="visitDate" required
                     min="<%= new Date().toISOString().split('T')[0] %>">
             </section>
-            <section class="rides-list">
+            <section id="ridesList">
                 <% for (let ride of ridesList) { %>
                     <article id="<%= ride.id %>">
                         <h3>
@@ -37,9 +37,9 @@
                     </article>
                     <% } %>
             </section>
-            <section id="basket">
+            <section id="confirmation">
                 <h2>Your ticket</h2>
-                <div id="ticketsDiv"></div>
+                <div id="ticketsContainer"></div>
                 <p id="totalCost">Ticket Cost: £0.00</p>
                 <label>
                     <input type="checkbox" name="confirmOrder" required>
@@ -50,9 +50,9 @@
         </form>
     </main>
     <%- include('partials/_footer.html') %>
-        <script>
-
-        </script>
+    <script>
+        
+    </script>
 
 
 
