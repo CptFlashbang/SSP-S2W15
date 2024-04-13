@@ -14,8 +14,8 @@
     </header>
     <main>
         <form id="orderTicketForm">
-            <section>
-                <h2>Order a Ticket</h2>
+            <h2>Order a Ticket</h2>
+            <section id="dateselect">
                 <label for="visitDate">Visit Date:</label>
                 <input type="date" id="visitDate" name="visitDate" required
                     min="<%= new Date().toISOString().split('T')[0] %>">
@@ -37,87 +37,25 @@
                     </article>
                     <% } %>
             </section>
-            <button type="submit" disabled id="submit-button">Checkout</button>
-        </form>
-        <form id="basket">
-            <h2>Your ticket</h2>
-            <div id="ticketsDiv"></div>
-            <p id="totalCost">Ticket Cost: £0.00</p>
-            <label>
-                <input type="checkbox" name="confirmOrder" required>
-                I confirm this order is correct
-            </label>
-            <button type="submit" disabled>Confirm Order</button>
+            <section id="basket">
+                <h2>Your ticket</h2>
+                <div id="ticketsDiv"></div>
+                <p id="totalCost">Ticket Cost: £0.00</p>
+                <label>
+                    <input type="checkbox" name="confirmOrder" required>
+                    I confirm this order is correct
+                </label>
+                <button type="submit" disabled>Purchase ticket</button>
+            </section>
         </form>
     </main>
     <%- include('partials/_footer.html') %>
+        <script>
 
-    <script>
-        const orderForm = document.getElementById('orderTicketForm');
-        const visitDateInput = document.getElementById('visitDate');
-        const checkoutButton = document.getElementById('submit-button');
-        const confirmButton = document.querySelector('#basket button[type="submit"]');
-        const confirmOrderCheckbox = document.querySelector('#basket input[name="confirmOrder"]');
-        const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
-        const totalCostElement = document.getElementById('totalCost');
-        const baseTicketPrice = 20;
-    
-        function getOrderDetails() {
-            return {
-                date: visitDateInput.value,
-                fastPasses: Array.from(document.querySelectorAll('.rides-list input[type="checkbox"]:checked'))
-                                  .map(checkbox => checkbox.value)
-            };
-        }
-    
-        visitDateInput.addEventListener('change', () => {
-            const selectedDate = new Date(visitDateInput.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Reset time part to ensure correct day comparison
-            checkoutButton.disabled = !(selectedDate >= today); // Enable checkout only if the date is valid
-            updateBasketDisplay();
-            updateTotalCost();
-        });
-    
-        function updateTotalCost() {
-            let totalCost = baseTicketPrice;
-            rideCheckboxes.forEach(checkbox => {
-                if (checkbox.checked) {
-                    totalCost += parseFloat(checkbox.getAttribute('data-cost'));
-                }
-            });
-            totalCostElement.textContent = `Ticket Cost: £${totalCost.toFixed(2)}`;
-        }
-    
-        function updateBasketDisplay() {
-            const ticketsDiv = document.getElementById('ticketsDiv');
-            const order = getOrderDetails();
-            let orderContent = `<div class="ticket-container"><p>Ticket for ${order.date}</p>`;
-            if (order.fastPasses.length) {
-                orderContent += '<ul>';
-                order.fastPasses.forEach(ride => {
-                    orderContent += `<li>Fast Track Ride: ${ride}</li>`;
-                });
-                orderContent += '</ul>';
-            }
-            orderContent += '</div>';
-            ticketsDiv.innerHTML = orderContent;
-        }
-    
-        rideCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                updateTotalCost();
-                updateBasketDisplay();
-            });
-        });
-    
-        confirmOrderCheckbox.addEventListener('change', () => {
-            confirmButton.disabled = !confirmOrderCheckbox.checked; // Enable confirm button based on checkbox
-        });
-    </script>
-    
-    
-    
+        </script>
+
+
+
 </body>
 
 </html>
