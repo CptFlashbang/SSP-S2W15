@@ -37,94 +37,87 @@
                     </article>
                     <% } %>
             </section>
-            <p id="totalCost">Ticket Cost: £20.00</p>
             <button type="submit" disabled id="submit-button">Checkout</button>
         </form>
-        <!-- <section id="basket">
-            <h2>Your Basket</h2>
+        <form id="basket">
+            <h2>Your ticket</h2>
             <div id="ticketsDiv"></div>
-        </section> -->
+            <p id="totalCost">Ticket Cost: £0.00</p>
+            <label>
+                <input type="checkbox" name="confirmOrder" required>
+                I confirm this order is correct
+            </label>
+            <button type="submit" disabled>Confirm Order</button>
+        </form>
     </main>
     <%- include('partials/_footer.html') %>
 
-        <script>
-            const orderForm = document.getElementById('orderTicketForm');
-            const visitDateInput = document.getElementById('visitDate');
-            const submitButton = document.getElementById('submit-button');
-            const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
-            const totalCostElement = document.getElementById('totalCost');
-            const baseTicketPrice = 20;
-
-            function updateTotalCost() {
-                let totalCost = baseTicketPrice;
-                rideCheckboxes.forEach(checkbox => {
-                    if (checkbox.checked)
-                    {
-                        totalCost += parseFloat(checkbox.getAttribute('data-cost'));
-                    }
-                });
-                totalCostElement.textContent = `Ticket Cost: £${totalCost.toFixed(2)}`;
-            }
-
-            visitDateInput.addEventListener('change', () => {
-                const selectedDate = new Date(visitDateInput.value);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0); // Reset time part to ensure correct day comparison
-                if (selectedDate >= today)
-                {
-                    submitButton.disabled = false;
-                } else
-                {
-                    submitButton.disabled = true;
+    <script>
+        const orderForm = document.getElementById('orderTicketForm');
+        const visitDateInput = document.getElementById('visitDate');
+        const checkoutButton = document.getElementById('submit-button');
+        const confirmButton = document.querySelector('#basket button[type="submit"]');
+        const confirmOrderCheckbox = document.querySelector('#basket input[name="confirmOrder"]');
+        const rideCheckboxes = document.querySelectorAll('.rides-list input[type="checkbox"]');
+        const totalCostElement = document.getElementById('totalCost');
+        const baseTicketPrice = 20;
+    
+        function getOrderDetails() {
+            return {
+                date: visitDateInput.value,
+                fastPasses: Array.from(document.querySelectorAll('.rides-list input[type="checkbox"]:checked'))
+                                  .map(checkbox => checkbox.value)
+            };
+        }
+    
+        visitDateInput.addEventListener('change', () => {
+            const selectedDate = new Date(visitDateInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Reset time part to ensure correct day comparison
+            checkoutButton.disabled = !(selectedDate >= today); // Enable checkout only if the date is valid
+            updateBasketDisplay();
+            updateTotalCost();
+        });
+    
+        function updateTotalCost() {
+            let totalCost = baseTicketPrice;
+            rideCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    totalCost += parseFloat(checkbox.getAttribute('data-cost'));
                 }
             });
-
-            rideCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateTotalCost);
+            totalCostElement.textContent = `Ticket Cost: £${totalCost.toFixed(2)}`;
+        }
+    
+        function updateBasketDisplay() {
+            const ticketsDiv = document.getElementById('ticketsDiv');
+            const order = getOrderDetails();
+            let orderContent = `<div class="ticket-container"><p>Ticket for ${order.date}</p>`;
+            if (order.fastPasses.length) {
+                orderContent += '<ul>';
+                order.fastPasses.forEach(ride => {
+                    orderContent += `<li>Fast Track Ride: ${ride}</li>`;
+                });
+                orderContent += '</ul>';
+            }
+            orderContent += '</div>';
+            ticketsDiv.innerHTML = orderContent;
+        }
+    
+        rideCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateTotalCost();
+                updateBasketDisplay();
             });
-
-            orderForm.addEventListener('submit', function (event) {
-                event.preventDefault();
-                const formData = new FormData(this);
-                const visitDate = formData.get('visitDate');
-                const fastPasses = formData.getAll('fastPasses');
-
-                const order = {
-                    date: visitDate,
-                    fastPasses: fastPasses
-                };
-
-                fetch('/checkout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(order)
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Checkout successful:', data);
-                        // updateBasketDisplay(order);
-                    })
-                    .catch(error => {
-                        console.error('Checkout failed:', error);
-                    });
-            });
-
-        // function updateBasketDisplay(order) {
-        //     const ticketsDiv = document.getElementById('ticketsDiv');
-        //     let orderContent = `<div class="ticket-container"><p>Ticket for ${order.date}</p>`;
-        //     if (order.fastPasses.length) {
-        //         orderContent += '<ul>';
-        //         order.fastPasses.forEach(ride => {
-        //             orderContent += `<li>Fast Track Ride: ${ride}</li>`;
-        //         });
-        //         orderContent += '</ul>';
-        //     }
-        //     orderContent += '</div>';
-        //     ticketsDiv.innerHTML = orderContent;
-        // }
-        </script>
+        });
+    
+        confirmOrderCheckbox.addEventListener('change', () => {
+            confirmButton.disabled = !confirmOrderCheckbox.checked; // Enable confirm button based on checkbox
+        });
+    </script>
+    
+    
+    
 </body>
 
 </html>
