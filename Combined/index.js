@@ -24,10 +24,20 @@ app.use(express.static(path.join(__dirname,"public")));
 app.use("/users", userRouter);
 
 // ROUTE ---------------------------------------------------------------------
-app.get("/", (req, res) =>
-{
-console.log("Redirect to users router");
-res.redirect("/users/welcome");
+app.get('/', async (req, res) => {
+    // Local Variables 
+    let collection = await db.collection("Rides");
+    let results = await collection.find({}).toArray();
+    const ridesList = results.map(ride => {
+        return {
+            id: ride._id,
+            name: ride.name,
+            fast_track_cost: ride.fast_track_cost,
+            min_height: ride.min_height
+        };
+    });
+
+    res.render("home_unlogged", { ridesList: ridesList });
 });
 
 // START SERVER --------------------------------------------------------------
