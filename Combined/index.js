@@ -4,7 +4,7 @@ import express from "express";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import userRouter from "./routes/users.js";
-// import ticketsRouter from "./routes/tickets.js";
+import ticketsRouter from "./routes/tickets.js";
 import db from "./db/connection.js";
 
 // Application Objects
@@ -24,8 +24,10 @@ app.use(express.static(path.join(__dirname,"public")));
 
 // ROUTERS -------------------------------------------------------------------
 app.use("/users", userRouter);
+app.use("/tickets", ticketsRouter);
 
 // ROUTE ---------------------------------------------------------------------
+
 app.get('/', async (req, res) => {
     // Local Variables 
     let collection = await db.collection("Rides");
@@ -42,8 +44,8 @@ app.get('/', async (req, res) => {
     res.render("home", { ridesList: ridesList });
 });
 
-// START SERVER --------------------------------------------------------------
-app.listen(2319, () =>
+const port = 2319;
+app.listen(port, () =>
 {
-console.log("The server is listening...");
+    console.log(`The server is listening on port ${port}.`);
 });
