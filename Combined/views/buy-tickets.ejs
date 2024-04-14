@@ -13,7 +13,7 @@
         <%- include('partials/_navigation.html') %>
     </header>
     <main>
-        <form id="orderTicketForm">
+        <form id="orderTicketForm" action="/tickets/buy-tickets" method="post">
             <h2>Order a Ticket</h2>
             <section id="dateselect">
                 <label for="visitDate">Visit Date:</label>
@@ -40,7 +40,7 @@
                     <input type="checkbox" id="confirmOrderChkbox" required>
                     I confirm this order is correct
                 </label>
-                <button type="submit" id="purchaseButton" disabled>Purchase ticket</button>
+                <button type="submit" id="purchaseButton" value="Get Ticket" disabled>Purchase ticket</button>
             </section>
         </form>
     </main>
