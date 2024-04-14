@@ -38,7 +38,7 @@ router.post("/buy-tokens", async (req, res, next) =>
 {
     // Local Variables 
     let findID;
-    let collection = await db.collection("orders");
+    let collection = await db.collection("Orders");
     let newDoc = {}; let result;
     // Demo what's in the body 
     console.log(req.body);
@@ -57,7 +57,7 @@ router.get("/orders/:orderId", async (req, res, next) =>
 {
     // Local Variables
     let findID;
-    let collection = await db.collection("orders");
+    let collection = await db.collection("Orders");
     let result;
 
     try {
@@ -82,7 +82,7 @@ router.get("/orders/:orderId", async (req, res, next) =>
 router.post("/orders/:orderId", async (req, res, next) =>
 {
     // Local Variables 
-    let collection = await db.collection("orders");
+    let collection = await db.collection("Orders");
     let findID = new ObjectId(req.params.orderId);
     let result; console.log(req.body);
     result = await collection.updateOne(
