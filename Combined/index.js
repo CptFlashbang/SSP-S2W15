@@ -4,6 +4,8 @@ import express from "express";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import userRouter from "./routes/users.js";
+import ticketsRouter from "./routes/tickets.js";
+import db from "./db/connection.js";
 
 // Application Objects
 const __filename = fileURLToPath(import.meta.url);
