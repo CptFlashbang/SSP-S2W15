@@ -7,6 +7,20 @@ import { ObjectId } from "mongodb";
 
 // Application Objects
 const router = express.Router();
+
+let collection = await db.collection("Rides");
+let results = await collection.find({}).toArray();
+const ridesList = results.map(ride =>
+{
+    return {
+        id: ride._id,
+        name: ride.name,
+        fast_track_cost: ride.fast_track_cost,
+        min_height: ride.min_height
+    };
+});
+
+
 // Middleware for This Router
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
