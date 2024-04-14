@@ -53,7 +53,9 @@ router.post("/buy-tickets", async (req, res, next) =>
     // Local Variables 
     let findID;
     let collection = await db.collection("Orders");
-    let newDoc = {}; let result;
+    let newDoc = {};
+    let result;
+
     // Demo what's in the body 
     console.log(req.body);
     newDoc.order = [];
