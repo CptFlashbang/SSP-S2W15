@@ -33,38 +33,26 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.get('/buy-tickets', async (req, res) =>
 {
     // Local Variables 
-    let collection = await db.collection("Rides");
-    let results = await collection.find({}).toArray();
-    const ridesList = results.map(ride =>
-    {
-        return {
-            id: ride._id,
-            name: ride.name,
-            fast_track_cost: ride.fast_track_cost,
-            min_height: ride.min_height
-        };
-    });
 
     res.render("buy-tickets", { ridesList: ridesList });
 });
 
 router.post("/buy-tickets", async (req, res, next) =>
 {
-    // Local Variables 
-    let findID;
     let collection = await db.collection("Orders");
-    let newDoc = {};
-    let result;
+    let newDoc = {
+        date_booked: new Date(),
+        visit_date: req.body.visitDate,
+        fastPasses: ridesList.map(ride => ({
+            name: ride.name,
+            selected: req.body.fastPasses.includes(ride.name)
+        }))
+    };
 
-    // Demo what's in the body 
-    console.log(req.body);
-    newDoc.order = [];
-    newDoc.date = new Date();
-    Object.keys(req.body).forEach(key =>
-    {
-        newDoc.order.push({ "name": key, "used": false });
-    });
+    // console.log("Document to be inserted:", newDoc);
+
     result = await collection.insertOne(newDoc);
+
     res.render("tickets-bought");
 });
 
