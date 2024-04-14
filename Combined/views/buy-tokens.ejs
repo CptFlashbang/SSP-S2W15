@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy tokens</title>
+</head>
+
+<body>
+    <%- include('partials/_header.html') %>
+        <main>
+            <section>
+                <h1>Buy tokens</h1>
+                <p>Please buy tokens with the form below</p>
+            </section>
+            <form action="/tokens/buy-tokens" method="post">
+                <section class="product-list">
+                    <% for (let i=0; i < games.length; i++) { %>
+                        <section>
+                            <img class="token-img" src="/assets/img/token.png" alt="token">
+                            <label for="<%= games[i].name %>">
+                                <h3>
+                                    <%= games[i].name %>
+                                </h3>
+                                <p>
+                                    <% for (let j=0; j < games[i].tags.length; j++) { %>
+                                        <span class="product-tags">
+                                            <%= games[i].tags[j] %>
+                                        </span>
+                                        <% } %>
+                                </p>
+                            </label>
+                            <input type="checkbox" name="<%= games[i].name %>" id="id[]">
+                        </section>
+                        <% } %>
+                </section>
+                <input class="product-submit" type="submit" value="Get Tokens">
+            </form>
+        </main>
+        <%- include('partials/_footer.html') %>
+</body>
+
+</html>
