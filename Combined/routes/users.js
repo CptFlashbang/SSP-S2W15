@@ -59,7 +59,7 @@ router.get('/sign-in', (req, res) =>
 router.post('/sign-in', (req, res) =>
 {
     res.status(200)
-    res.redirect("/users/welcome");
+    res.redirect("/tickets/buy-tickets");
 });
 
 router.get('/sign-up', (req, res) =>
