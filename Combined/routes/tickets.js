@@ -11,12 +11,12 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-// Routes for This Router (all routes /tokens onwards)
+// Routes for This Router (all routes /tickets onwards)
 // router.get('/', (req, res) => {
 //     res.render("tickets");
 // });
 
-router.get('/buy-tokens', async (req, res) =>
+router.get('/buy-tickets', async (req, res) =>
 {
     // Local Variables 
     let collection = await db.collection("Rides");
@@ -34,7 +34,7 @@ router.get('/buy-tokens', async (req, res) =>
     res.render("home", { ridesList: ridesList });
 });
 
-router.post("/buy-tokens", async (req, res, next) =>
+router.post("/buy-tickets", async (req, res, next) =>
 {
     // Local Variables 
     let findID;
@@ -49,7 +49,7 @@ router.post("/buy-tokens", async (req, res, next) =>
         newDoc.order.push({ "name": key, "used": false });
     });
     result = await collection.insertOne(newDoc);
-    res.render("tokens-bought");
+    res.render("tickets-bought");
 });
 
 // View Orders by ID --- But we might want to limit this to only if the user has access!
