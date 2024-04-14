@@ -60,9 +60,14 @@ app.get('/home_logged', async (req, res) => {
 });
 
 app.post('/checkout', (req, res) => {
-    const basket = req.body;
-    console.log('Received basket:', basket);    
-    res.json({ status: 'success', message: 'Checkout processed' });
+    const order = req.body;
+    // You might want to add order validation here
+
+    // Save order in session or database
+    req.session.order = order;  // Assuming you have session middleware set up
+
+    // Respond with a JSON object that includes the redirect URL
+    res.json({ redirectUrl: '/confirmation' });
 });
 
 // START SERVER --------------------------------------------------------------
