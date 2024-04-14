@@ -31,7 +31,7 @@ router.get('/buy-tickets', async (req, res) =>
         };
     });
 
-    res.render("home", { ridesList: ridesList });
+    res.render("buy-tickets", { ridesList: ridesList });
 });
 
 router.post("/buy-tickets", async (req, res, next) =>
