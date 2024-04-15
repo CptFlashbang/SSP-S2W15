@@ -66,7 +66,10 @@ router.post("/buy-tickets", async (req, res, next) => {
 
 router.get("/past-orders", async (req, res, next) => {
     let collection = await db.collection("Orders");
-    let results = await collection.find({}).toArray();
+    const currentDate = new Date().toISOString().split('T')[0];
+    let results = await collection.find({
+        visit_date: { $lt: currentDate }
+    }).toArray();
     res.render("past-orders", { orderList : results });
 });
 
