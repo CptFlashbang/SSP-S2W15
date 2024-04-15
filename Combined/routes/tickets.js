@@ -8,18 +8,6 @@ import { ObjectId } from "mongodb";
 // Application Objects
 const router = express.Router();
 
-let collection = await db.collection("Rides");
-let results = await collection.find({}).toArray();
-const ridesList = results.map(ride =>
-{
-    return {
-        id: ride._id,
-        name: ride.name,
-        fast_track_cost: ride.fast_track_cost,
-        min_height: ride.min_height
-    };
-});
-
 
 // Middleware for This Router
 router.use(bodyParser.json());
@@ -30,16 +18,33 @@ router.use(bodyParser.urlencoded({ extended: true }));
 //     res.render("tickets");
 // });
 
-router.get('/buy-tickets', async (req, res) =>
-{
+router.get('/buy-tickets', async (req, res) => {
     // Local Variables 
-
+    let collection = await db.collection("Rides");
+    let results = await collection.find({}).toArray();
+    const ridesList = results.map(ride => {
+        return {
+            id: ride._id,
+            name: ride.name,
+            fast_track_cost: ride.fast_track_cost,
+            min_height: ride.min_height
+        };
+    });
     res.render("buy-tickets", { ridesList: ridesList });
 });
 
-router.post("/buy-tickets", async (req, res, next) =>
-{
-    let collection = await db.collection("Orders");
+router.post("/buy-tickets", async (req, res, next) => {
+    let collection1 = await db.collection("Rides");
+    let results = await collection1.find({}).toArray();
+    const ridesList = results.map(ride => {
+        return {
+            id: ride._id,
+            name: ride.name,
+            fast_track_cost: ride.fast_track_cost,
+            min_height: ride.min_height
+        };
+    });
+    let collection2 = await db.collection("Orders");
     let newDoc = {
         date_booked: new Date(),
         visit_date: req.body.visitDate,
@@ -51,14 +56,13 @@ router.post("/buy-tickets", async (req, res, next) =>
 
     // console.log("Document to be inserted:", newDoc);
 
-    result = await collection.insertOne(newDoc);
+    result = await collection2.insertOne(newDoc);
 
     res.render("tickets-bought");
 });
 
 // View Orders by ID --- But we might want to limit this to only if the user has access!
-router.get("/orders/:orderId", async (req, res, next) =>
-{
+router.get("/orders/:orderId", async (req, res, next) => {
     // Local Variables
     let findID;
     let collection = await db.collection("Orders");
@@ -83,8 +87,7 @@ router.get("/orders/:orderId", async (req, res, next) =>
 });
 
 
-router.post("/orders/:orderId", async (req, res, next) =>
-{
+router.post("/orders/:orderId", async (req, res, next) => {
     // Local Variables 
     let collection = await db.collection("Orders");
     let findID = new ObjectId(req.params.orderId);
