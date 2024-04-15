@@ -77,7 +77,7 @@ router.get("/orders/upcoming-tickets", async (req, res, next) => {
     let collection = await db.collection("Orders");
     const currentDate = new Date().toISOString().split('T')[0];
     let results = await collection.find({
-        visit_date: { $gt: currentDate }
+        visit_date: { $gte: currentDate }
     }).toArray();
     res.render("upcoming-tickets", { orderList : results });
 });
