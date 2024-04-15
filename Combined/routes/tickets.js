@@ -64,7 +64,11 @@ router.post("/buy-tickets", async (req, res, next) => {
     res.render("tickets-bought");
 });
 
-
+router.get("/past-orders", async (req, res, next) => {
+    let collection = await db.collection("Orders");
+    let results = await collection.find({}).toArray();
+    res.render("past-orders", { orderList : results });
+});
 
 // View Orders by ID --- But we might want to limit this to only if the user has access!
 router.get("/orders/:orderId", async (req, res, next) => {
