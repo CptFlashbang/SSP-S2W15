@@ -40,7 +40,7 @@ router.post("/buy-tickets", async (req, res, next) => {
         return {
             id: ride._id,
             name: ride.name,
-            fast_track_cost: ride.fast_track_cost,
+            fast_track_cost: parseFloat(ride.fast_track_cost),
             min_height: ride.min_height
         };
     });
@@ -51,15 +51,20 @@ router.post("/buy-tickets", async (req, res, next) => {
         fastPasses: ridesList.map(ride => ({
             name: ride.name,
             selected: req.body.fastPasses.includes(ride.name)
-        }))
+        })),
+        cost: ridesList.reduce((acc, ride) => {
+            return req.body.fastPasses.includes(ride.name) ? acc + ride.fast_track_cost : acc;
+        }, 0)
     };
-
+    console.log(req.body);
     // console.log("Document to be inserted:", newDoc);
 
-    result = await collection2.insertOne(newDoc);
+    let result = await collection2.insertOne(newDoc);
 
     res.render("tickets-bought");
 });
+
+
 
 // View Orders by ID --- But we might want to limit this to only if the user has access!
 router.get("/orders/:orderId", async (req, res, next) => {
