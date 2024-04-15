@@ -69,7 +69,7 @@ router.get("/orders/past-tickets", async (req, res, next) => {
     const currentDate = new Date().toISOString().split('T')[0];
     let results = await collection.find({
         visit_date: { $lt: currentDate }
-    }).toArray();
+    }).sort({ visit_date: 1 }).toArray();
     res.render("past-tickets", { orderList : results });
 });
 
@@ -78,7 +78,7 @@ router.get("/orders/upcoming-tickets", async (req, res, next) => {
     const currentDate = new Date().toISOString().split('T')[0];
     let results = await collection.find({
         visit_date: { $gte: currentDate }
-    }).toArray();
+    }).sort({ visit_date: 1 }).toArray();
     res.render("upcoming-tickets", { orderList : results });
 });
 
