@@ -64,7 +64,7 @@ router.post("/buy-tickets", async (req, res, next) => {
     res.render("tickets-bought");
 });
 
-router.get("/orders/past-orders", async (req, res, next) => {
+router.get("/orders/past-tickets", async (req, res, next) => {
     let collection = await db.collection("Orders");
     const currentDate = new Date().toISOString().split('T')[0];
     let results = await collection.find({
@@ -83,43 +83,43 @@ router.get("/orders/upcoming-tickets", async (req, res, next) => {
 });
 
 // View Orders by ID --- But we might want to limit this to only if the user has access!
-router.get("/orders/:orderId", async (req, res, next) => {
-    // Local Variables
-    let findID;
-    let collection = await db.collection("Orders");
-    let result;
+// router.get("/orders/:orderId", async (req, res, next) => {
+//     // Local Variables
+//     let findID;
+//     let collection = await db.collection("Orders");
+//     let result;
 
-    try {
-        findID = new ObjectId(req.params.orderId);
-        result = await collection.findOne({ "_id": findID });
+//     try {
+//         findID = new ObjectId(req.params.orderId);
+//         result = await collection.findOne({ "_id": findID });
 
-        // Check if we have that result, if not 404
-        if (!result) {
-            next();
-        }
-        else {
-            res.render("order", { order: result });
-        }
-    }
-    catch (err) {
-        // Express cannot catch a thrown error in an async function therefore we pass to next and handle it, this error is from a badly formed ID
-        next(err);
-    }
-});
+//         // Check if we have that result, if not 404
+//         if (!result) {
+//             next();
+//         }
+//         else {
+//             res.render("order", { order: result });
+//         }
+//     }
+//     catch (err) {
+//         // Express cannot catch a thrown error in an async function therefore we pass to next and handle it, this error is from a badly formed ID
+//         next(err);
+//     }
+// });
 
 
-router.post("/orders/:orderId", async (req, res, next) => {
-    // Local Variables 
-    let collection = await db.collection("Orders");
-    let findID = new ObjectId(req.params.orderId);
-    let result; console.log(req.body);
-    result = await collection.updateOne(
-        { "_id": findID },
-        { "$set": { "order.$[element].used": true } },
-        { arrayFilters: [{ "element.name": { $eq: req.body.usedtoken } }] });
-    result = await collection.findOne({ "_id": findID });
-    res.render("order", { order: result });
-});
+// router.post("/orders/:orderId", async (req, res, next) => {
+//     // Local Variables 
+//     let collection = await db.collection("Orders");
+//     let findID = new ObjectId(req.params.orderId);
+//     let result; console.log(req.body);
+//     result = await collection.updateOne(
+//         { "_id": findID },
+//         { "$set": { "order.$[element].used": true } },
+//         { arrayFilters: [{ "element.name": { $eq: req.body.usedtoken } }] });
+//     result = await collection.findOne({ "_id": findID });
+//     res.render("order", { order: result });
+// });
 
 
 export default router;
