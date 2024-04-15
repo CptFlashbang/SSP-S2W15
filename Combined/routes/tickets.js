@@ -64,16 +64,16 @@ router.post("/buy-tickets", async (req, res, next) => {
     res.render("tickets-bought");
 });
 
-router.get("/past-orders", async (req, res, next) => {
+router.get("/orders/past-orders", async (req, res, next) => {
     let collection = await db.collection("Orders");
     const currentDate = new Date().toISOString().split('T')[0];
     let results = await collection.find({
         visit_date: { $lt: currentDate }
     }).toArray();
-    res.render("past-orders", { orderList : results });
+    res.render("past-tickets", { orderList : results });
 });
 
-router.get("/upcoming-tickets", async (req, res, next) => {
+router.get("/orders/upcoming-tickets", async (req, res, next) => {
     let collection = await db.collection("Orders");
     const currentDate = new Date().toISOString().split('T')[0];
     let results = await collection.find({
