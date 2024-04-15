@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokens-bought</title>
+</head>
+
+<body>
+    <%- include('partials/_navigation.html') %>
+        <main>
+            <section id="orderList">
+                <h1>Previously purchased tickets</h1>
+                <!-- <ul> -->
+                <% orderList.forEach(order=> { %>
+                    <article id="<%= order._id %>">
+                        <h3>Ticket for: <%= order.visit_date %>
+                        </h3>
+                        <ul>
+                            <% order.fastPasses.forEach(fastPass=> { %>
+                                <% if (fastPass.selected) { %>
+                                    <li>Fast Track Ride: <%= fastPass.name %>
+                                    </li>
+                                    <% } %>
+                                        <% }) %>
+                        </ul>
+                        <p>Date booked: <%= new Date(order.date_booked).toLocaleDateString() %>
+                        </p>
+                    </article>
+                    <% }) %>
+                        <!-- </ul> -->
+            </section>
+        </main>
+        <%- include('partials/_footer.html') %>
+</body>
+
+</html>
