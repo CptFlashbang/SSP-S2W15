@@ -73,6 +73,15 @@ router.get("/past-orders", async (req, res, next) => {
     res.render("past-orders", { orderList : results });
 });
 
+router.get("/upcoming-tickets", async (req, res, next) => {
+    let collection = await db.collection("Orders");
+    const currentDate = new Date().toISOString().split('T')[0];
+    let results = await collection.find({
+        visit_date: { $gt: currentDate }
+    }).toArray();
+    res.render("upcoming-tickets", { orderList : results });
+});
+
 // View Orders by ID --- But we might want to limit this to only if the user has access!
 router.get("/orders/:orderId", async (req, res, next) => {
     // Local Variables
