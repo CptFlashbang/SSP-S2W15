@@ -56,7 +56,7 @@ router.get('/sign-in', (req, res) =>
     res.render("sign-in");
 });
 
-router.post('/sign-in', (req, res) =>
+router.post('/sign-in', sign_in, (req, res) =>
 {
     res.status(200)
     res.redirect("/tickets/buy-tickets");
