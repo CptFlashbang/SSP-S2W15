@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alton Turrets - Home</title>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Alton Turrets</h1>
+        <%- include('partials/_navigation.html') %>
+    </header>
+    <main>
+        <form id="orderTicketForm" action="/tickets/buy-tickets" method="post">
+            <h2>Edit a Ticket</h2>
+            <section id="dateselect">
+                <label for="visitDate">Visit Date:</label>
+                <input type="date" id="visitDate" name="visitDate" required min="<%= new Date().toISOString().split('T')[0] %>" value="<%= ticket.visit_date %>">
+            </section>
+            <section id="ridesList">
+                <% for (let ride of ridesList) { %>
+                <article id="<%= ride.id %>">
+                    <h3><%= ride.name %></h3>
+                    <p>Fast track cost: £<%= ride.fast_track_cost %></p>
+                    <p>Minimum height: <%= ride.min_height %>cm</p>
+                    <label>
+                        <% 
+                        let isChecked = false; // Default to false
+                        for (let fastPass of ticket.fastPasses) {
+                            if (fastPass.name === ride.name && fastPass.selected) {
+                                isChecked = true;
+                                break;
+                            }
+                        }
+                        %>
+                        <input type="checkbox" name="fastPasses" value="<%= ride.name %>" data-cost="<%= ride.fast_track_cost %>"
+                            <% if (isChecked) { %> checked <% } %>> 
+                        Select Fast Pass
+                    </label>
+                </article>
+                <% } %>
+            </section>
+            <section id="confirmation">
+                <h2>Your ticket</h2>
+                <div id="ticketsContainer"></div>
+                <p id="totalCost">Ticket Cost: £0.00</p>
+                <label>
+                    <input type="checkbox" id="confirmOrderChkbox" required>
+                    I confirm this order is correct
+                </label>
+                <button type="submit" id="purchaseButton" value="Get Ticket" disabled>Purchase ticket</button>
+            </section>
+        </form>
+    </main>
+    <%- include('partials/_footer.html') %>
+    <script>
+        //variables
+        const rideCheckboxes = document.querySelectorAll('#ridesList input[type="checkbox"]');
+        const baseTicketPrice = 20;
+        const confirmOrderChkbox = document.getElementById('confirmOrderChkbox');
+        const visitDateInput = document.getElementById('visitDate');
+        const totalCostElement = document.getElementById('totalCost');
+        const purchaseButton = document.getElementById('purchaseButton');
+    
+        //event listeners
+        rideCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateTotalCost();
+                updateBasketDisplay();
+                updatePurchaseButtonState();
+            });
+        });
+    
+        confirmOrderChkbox.addEventListener('change', () => {
+            updatePurchaseButtonState();
+        });
+    
+        visitDateInput.addEventListener('change', () => {
+            const selectedDate = new Date(visitDateInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Reset time part to ensure correct day comparison
+            updateBasketDisplay();
+            updateTotalCost();
+            updatePurchaseButtonState();
+        });
+    
+        //functions
+        function updateTotalCost() {
+            let totalCost = baseTicketPrice;
+            rideCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    totalCost += parseFloat(checkbox.getAttribute('data-cost'));
+                }
+            });
+            totalCostElement.textContent = `Ticket Cost: £${totalCost.toFixed(2)}`;
+        }
+    
+        function getOrderDetails() {
+            return {
+                date: visitDateInput.value,
+                fastPasses: Array.from(document.querySelectorAll('#ridesList input[type="checkbox"]:checked'))
+                    .map(checkbox => checkbox.value)
+            };
+        }
+    
+        function updateBasketDisplay() {
+            const ticketsContainer = document.getElementById('ticketsContainer');
+            const order = getOrderDetails();
+            let orderContent = `<div class="ticket-container"><p>Ticket for ${order.date}</p>`;
+            if (order.fastPasses.length) {
+                orderContent += '<ul>';
+                order.fastPasses.forEach(ride => {
+                    orderContent += `<li>Fast Track Ride: ${ride}</li>`;
+                });
+                orderContent += '</ul>';
+            }
+            orderContent += '</div>';
+            ticketsContainer.innerHTML = orderContent;
+        }
+    
+        function updatePurchaseButtonState() {
+            const selectedDate = new Date(visitDateInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+    
+            // Enable button only if a valid date is selected and confirmation checkbox is checked
+            purchaseButton.disabled = !(selectedDate >= today && confirmOrderChkbox.checked);
+        }
+    </script>
+    
+</body>
+
+</html>
