@@ -56,7 +56,7 @@ router.get('/sign-in', (req, res) =>
     res.render("sign-in");
 });
 
-router.post('/sign-in', (req, res) =>
+router.post('/sign-in', sign_in, (req, res) =>
 {
     res.status(200)
     res.redirect("/users/welcome");
@@ -121,17 +121,18 @@ function create(req, res, next)
             res.cookie("session", sessionCookie, options);
             next();
         })
-            .catch((error) =>
-            {
-                console.error("ERROR: " + error);
-            });
-    })
         .catch((error) =>
         {
-            const errorCode = error.code;
-            const errorMessage = error.message; console.error("Failed to create user: " + req.body.email);
-            res.status(409); res.render("sign-up", { comment: error.code });
+            console.error("ERROR: " + error);
         });
+    })
+    .catch((error) =>
+    {
+        const errorCode = error.code;
+        const errorMessage = error.message; 
+        console.error("Failed to create user: " + req.body.email + error.message);
+        res.status(409); res.render("sign-up", { comment: error.code });
+    });
 }
 
 function sign_in(req, res, next)
