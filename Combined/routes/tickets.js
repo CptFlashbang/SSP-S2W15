@@ -82,25 +82,25 @@ router.get("/orders/upcoming-tickets", async (req, res, next) => {
     res.render("upcoming-tickets", { orderList : results });
 });
 
-router.get("/orders/edit-tickets/:orderId", async (req, res, next) => {
-    let collection = await db.collection("Orders");
+router.get("/orders/edit-ticket/:orderId", async (req, res, next) => {
+    const collection = await db.collection("Orders");
     const orderId = req.params.orderId;
-    const ObjectId = require('mongodb').ObjectId; 
+    // const ObjectId = require('mongodb').ObjectId; 
     const query = { _id: new ObjectId(orderId) };
-    const result = await collection.findOne(query);
+    const ticket = await collection.findOne(query);
 
-    let collection2 = await db.collection("Rides");
-    let results = await collection2.find({}).toArray();
-    const ridesList = results.map(ride => {
+    const collection2 = await db.collection("Rides");
+    const rides = await collection2.find({}).toArray();
+    const ridesList = rides.map(ride => {
         return {
-            id: ride._id,
+            id: ride._id.toString(), // ensure _id is converted to string if necessary
             name: ride.name,
             fast_track_cost: ride.fast_track_cost,
             min_height: ride.min_height
         };
     });
 
-    res.render("edit-tickets", { ticket: result }, { ridesList: ridesList });
+    res.render("edit-ticket", { ticket: ticket, ridesList: ridesList });
 });
 
 // View Orders by ID --- But we might want to limit this to only if the user has access!
