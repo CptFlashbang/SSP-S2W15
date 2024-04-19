@@ -82,6 +82,15 @@ router.get("/orders/upcoming-tickets", async (req, res, next) => {
     res.render("upcoming-tickets", { orderList : results });
 });
 
+router.get("/orders/edit-tickets/:orderId", async (req, res, next) => {
+    let collection = await db.collection("Orders");
+    const orderId = req.params.orderId;
+    const ObjectId = require('mongodb').ObjectId; 
+    const query = { _id: new ObjectId(orderId) };
+    const result = await collection.findOne(query);
+    res.render("edit-tickets", { ticket: result });
+});
+
 // View Orders by ID --- But we might want to limit this to only if the user has access!
 // router.get("/orders/:orderId", async (req, res, next) => {
 //     // Local Variables
