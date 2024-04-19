@@ -1,0 +1,9 @@
+1) Add in being able to use a fast pass
+2) Address duplicating tickets
+3) Add in required authentication to all logged in routes
+4) Tidy up views and routes
+5) Do week 6 auth process
+6) Move ordered but not purchased tickets to temp table
+7) Add logout handling
+
+?) add css styling
