@@ -99,8 +99,42 @@ router.get("/orders/edit-ticket/:orderId", async (req, res, next) => {
             min_height: ride.min_height
         };
     });
-
     res.render("edit-ticket", { ticket: ticket, ridesList: ridesList });
+});
+
+router.post("/edit-ticket/:orderId", async (req, res, next) => {
+    let collection1 = await db.collection("Rides");
+    let results = await collection1.find({}).toArray();
+    const ridesList = results.map(ride => {
+        return {
+            id: ride._id,
+            name: ride.name,
+            fast_track_cost: parseFloat(ride.fast_track_cost),
+            min_height: ride.min_height
+        };
+    });
+
+    let updatedDoc = {
+        $set: {
+            date_booked: new Date(),
+            visit_date: req.body.visitDate,
+            fastPasses: ridesList.map(ride => ({
+                name: ride.name,
+                selected: req.body.fastPasses && req.body.fastPasses.includes(ride.name)
+            })),
+            cost: ridesList.reduce((acc, ride) => {
+                return req.body.fastPasses && req.body.fastPasses.includes(ride.name) ? acc + ride.fast_track_cost : acc;
+            }, 0)
+        }
+    };
+
+    let collection2 = await db.collection("Orders");
+    const orderId = req.params.orderId;
+    const ObjectId = require('mongodb').ObjectId;
+
+    
+    let result = await collection2.updateOne({ _id: new ObjectId(orderId) }, updatedDoc);
+    res.render("tickets-bought");
 });
 
 // View Orders by ID --- But we might want to limit this to only if the user has access!
