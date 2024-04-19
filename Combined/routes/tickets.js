@@ -88,7 +88,19 @@ router.get("/orders/edit-tickets/:orderId", async (req, res, next) => {
     const ObjectId = require('mongodb').ObjectId; 
     const query = { _id: new ObjectId(orderId) };
     const result = await collection.findOne(query);
-    res.render("edit-tickets", { ticket: result });
+
+    let collection2 = await db.collection("Rides");
+    let results = await collection2.find({}).toArray();
+    const ridesList = results.map(ride => {
+        return {
+            id: ride._id,
+            name: ride.name,
+            fast_track_cost: ride.fast_track_cost,
+            min_height: ride.min_height
+        };
+    });
+
+    res.render("edit-tickets", { ticket: result }, { ridesList: ridesList });
 });
 
 // View Orders by ID --- But we might want to limit this to only if the user has access!
