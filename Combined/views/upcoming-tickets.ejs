@@ -30,9 +30,9 @@
                         orderDate.setHours(0, 0, 0, 0); // Normalize orderDate to start of the day for accurate comparison
                         %>
                         <% if (orderDate.getTime() === today.getTime()) { %>
-                            <button onclick="window.location.href='/use-ticket/<%= order._id %>'">Use Ticket</button>
+                            <button onclick="window.location.href='/tickets/orders/use-ticket/<%= order._id %>'">Use Ticket</button>
                         <% } else if (orderDate > today) { %>
-                            <button onclick="window.location.href='/edit-ticket/<%= order._id %>'">Edit Ticket</button>
+                            <button onclick="window.location.href='/tickets/orders/edit-ticket/<%= order._id %>'">Edit Ticket</button>
                         <% } %>
                     </article>
                 <% }) %>
