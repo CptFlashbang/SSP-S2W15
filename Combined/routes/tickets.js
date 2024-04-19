@@ -53,8 +53,8 @@ router.post("/buy-tickets", async (req, res, next) => {
             selected: req.body.fastPasses.includes(ride.name)
         })),
         cost: ridesList.reduce((acc, ride) => {
-            return req.body.fastPasses.includes(ride.name) ? acc + ride.fast_track_cost : acc;
-        }, 0)
+            return req.body.fastPasses && req.body.fastPasses.includes(ride.name) ? acc + ride.fast_track_cost : acc;
+        }, 20)
     };
     console.log(req.body);
     // console.log("Document to be inserted:", newDoc);
@@ -124,7 +124,7 @@ router.post("/edit-ticket/:orderId", async (req, res, next) => {
             })),
             cost: ridesList.reduce((acc, ride) => {
                 return req.body.fastPasses && req.body.fastPasses.includes(ride.name) ? acc + ride.fast_track_cost : acc;
-            }, 0)
+            }, 20)
         }
     };
 
