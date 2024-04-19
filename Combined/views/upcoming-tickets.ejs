@@ -12,24 +12,30 @@
         <main>
             <section id="orderList">
                 <h1>Upcoming purchased tickets</h1>
-                <!-- <ul> -->
-                <% orderList.forEach(order=> { %>
+                <% orderList.forEach(order => { %>
                     <article id="<%= order._id %>">
-                        <h3>Ticket for: <%= order.visit_date %>
-                        </h3>
+                        <h3>Ticket for: <%= order.visit_date %></h3>
                         <ul>
-                            <% order.fastPasses.forEach(fastPass=> { %>
+                            <% order.fastPasses.forEach(fastPass => { %>
                                 <% if (fastPass.selected) { %>
-                                    <li>Fast Track Ride: <%= fastPass.name %>
-                                    </li>
-                                    <% } %>
-                                        <% }) %>
+                                    <li>Fast Track Ride: <%= fastPass.name %></li>
+                                <% } %>
+                            <% }) %>
                         </ul>
-                        <p>Date booked: <%= new Date(order.date_booked).toLocaleDateString() %>
-                        </p>
+                        <p>Date booked: <%= new Date(order.date_booked).toLocaleDateString() %></p>
+                        <% 
+                        const orderDate = new Date(order.visit_date);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0); // Normalize today to the start of the day
+                        orderDate.setHours(0, 0, 0, 0); // Normalize orderDate to start of the day for accurate comparison
+                        %>
+                        <% if (orderDate.getTime() === today.getTime()) { %>
+                            <button onclick="window.location.href='/use-ticket/<%= order._id %>'">Use Ticket</button>
+                        <% } else if (orderDate > today) { %>
+                            <button onclick="window.location.href='/edit-ticket/<%= order._id %>'">Edit Ticket</button>
+                        <% } %>
                     </article>
-                    <% }) %>
-                        <!-- </ul> -->
+                <% }) %>
             </section>
         </main>
         <%- include('partials/_footer.html') %>
