@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alton Turrets - Home</title>
+</head>
+
+<body>
+    <header>
+        <h1>Welcome to Alton Turrets</h1>
+        <%- include('partials/_navigation.html') %>
+    </header>
+    <main>
+        <h2>Edit a Ticket</h2>
+        <section id="dateselect">
+            <label for="visitDate">Visit Date:</label>
+            <input type="date" id="visitDate" name="visitDate" required min="<%= new Date().toISOString().split('T')[0] %>" value="<%= ticket.visit_date %>">
+        </section>
+        <section id="ridesList">
+            <% for (let ride of ridesList) { %>
+            <form id="removeFastPassForm-<%= ride.id %>" action="/tickets/orders/use-fast-pass/<%= ticket._id %>" method="post">
+                <article id="<%= ride.id %>">
+                    <h3><%= ride.name %></h3>
+                    <p>Fast track cost: £<%= ride.fast_track_cost %></p>
+                    <p>Minimum height: <%= ride.min_height %>cm</p>
+                    <% 
+                    let isChecked = ticket.fastPasses.some(fastPass => fastPass.name === ride.name && fastPass.selected); 
+                    %>
+                    <input type="checkbox" name="fastPasses" value="<%= ride.name %>" data-cost="<%= ride.fast_track_cost %>" 
+                    <% if (isChecked) { %> checked <% } %> disabled>
+                    Select Fast Pass
+                    <% if (isChecked) { %>
+                        <input type="hidden" name="rideName" value="<%= ride.name %>">
+                        <button type="submit">Remove fast-pass</button>
+                    <% } %>
+                </article>
+            </form>
+            <% } %>
+        </section>
+    </main>
+    <%- include('partials/_footer.html') %>    
+</body>
+
+</html>
