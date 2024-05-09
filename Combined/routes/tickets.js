@@ -65,7 +65,7 @@ router.post("/buy-tickets", allowed ,async (req, res, next) => {
     res.render("tickets-bought");
 });
 
-router.get("/orders/past-tickets", async (req, res, next) => {
+router.get("/orders/past-tickets", allowed ,async (req, res, next) => {
     let collection = await db.collection("Orders");
     const currentDate = new Date().toISOString().split('T')[0];
     let results = await collection.find({
@@ -74,7 +74,7 @@ router.get("/orders/past-tickets", async (req, res, next) => {
     res.render("past-tickets", { orderList : results });
 });
 
-router.get("/orders/upcoming-tickets", async (req, res, next) => {
+router.get("/orders/upcoming-tickets", allowed ,async (req, res, next) => {
     let collection = await db.collection("Orders");
     const currentDate = new Date().toISOString().split('T')[0];
     let results = await collection.find({
@@ -83,7 +83,7 @@ router.get("/orders/upcoming-tickets", async (req, res, next) => {
     res.render("upcoming-tickets", { orderList : results });
 });
 
-router.get("/orders/edit-ticket/:orderId", async (req, res, next) => {
+router.get("/orders/edit-ticket/:orderId", allowed ,async (req, res, next) => {
     const collection = await db.collection("Orders");
     const orderId = req.params.orderId;
     // const ObjectId = require('mongodb').ObjectId; 
@@ -103,7 +103,7 @@ router.get("/orders/edit-ticket/:orderId", async (req, res, next) => {
     res.render("edit-ticket", { ticket: ticket, ridesList: ridesList });
 });
 
-router.post("/edit-ticket/:orderId", async (req, res, next) => {
+router.post("/edit-ticket/:orderId", allowed ,async (req, res, next) => {
     let collection1 = await db.collection("Rides");
     let results = await collection1.find({}).toArray();
     const ridesList = results.map(ride => {
@@ -138,7 +138,7 @@ router.post("/edit-ticket/:orderId", async (req, res, next) => {
     res.render("tickets-bought");
 });
 
-router.get("/orders/use-ticket/:orderId", async (req, res, next) => {
+router.get("/orders/use-ticket/:orderId", allowed ,async (req, res, next) => {
     const collection = await db.collection("Orders");
     const orderId = req.params.orderId;
     // const ObjectId = require('mongodb').ObjectId; 
@@ -158,7 +158,7 @@ router.get("/orders/use-ticket/:orderId", async (req, res, next) => {
     res.render("use-ticket", { ticket: ticket, ridesList: ridesList });
 });
 
-router.post("/orders/use-fast-pass/:orderId", async (req, res) => {
+router.post("/orders/use-fast-pass/:orderId", allowed ,async (req, res) => {
     const orderId = req.params.orderId;
     const rideNameToRemove = req.body.rideName; // Assuming rideName is passed from the form
 
