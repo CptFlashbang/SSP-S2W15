@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import db from "../db/connection.js";
 import { ObjectId } from "mongodb";
+import { allowed } from "./users.js";
 
 // Application Objects
 const router = express.Router();
@@ -18,7 +19,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 //     res.render("tickets");
 // });
 
-router.get('/buy-tickets', async (req, res) => {
+router.get('/buy-tickets', allowed ,async (req, res) => {
     // Local Variables 
     let collection = await db.collection("Rides");
     let results = await collection.find({}).toArray();
@@ -33,7 +34,7 @@ router.get('/buy-tickets', async (req, res) => {
     res.render("buy-tickets", { ridesList: ridesList });
 });
 
-router.post("/buy-tickets", async (req, res, next) => {
+router.post("/buy-tickets", allowed ,async (req, res, next) => {
     let collection1 = await db.collection("Rides");
     let results = await collection1.find({}).toArray();
     const ridesList = results.map(ride => {
