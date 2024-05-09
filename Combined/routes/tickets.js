@@ -137,6 +137,63 @@ router.post("/edit-ticket/:orderId", async (req, res, next) => {
     res.render("tickets-bought");
 });
 
+router.get("/orders/use-ticket/:orderId", async (req, res, next) => {
+    const collection = await db.collection("Orders");
+    const orderId = req.params.orderId;
+    // const ObjectId = require('mongodb').ObjectId; 
+    const query = { _id: new ObjectId(orderId) };
+    const ticket = await collection.findOne(query);
+
+    const collection2 = await db.collection("Rides");
+    const rides = await collection2.find({}).toArray();
+    const ridesList = rides.map(ride => {
+        return {
+            id: ride._id.toString(), // ensure _id is converted to string if necessary
+            name: ride.name,
+            fast_track_cost: ride.fast_track_cost,
+            min_height: ride.min_height
+        };
+    });
+    res.render("use-ticket", { ticket: ticket, ridesList: ridesList });
+});
+
+router.post("/orders/use-fast-pass/:orderId", async (req, res) => {
+    const orderId = req.params.orderId;
+    const rideNameToRemove = req.body.rideName; // Assuming rideName is passed from the form
+
+    const collection = await db.collection("Orders");
+    const order = await collection.findOne({_id: new ObjectId(orderId)});
+
+    // Update the 'selected' status of the specific fast pass
+    const updatedFastPasses = order.fastPasses.map(fastPass => {
+        if (fastPass.name === rideNameToRemove) {
+            return { ...fastPass, selected: false }; // Set selected to false
+        }
+        return fastPass;
+    });
+
+    // Calculate the new cost by subtracting the cost of the removed fast pass
+    let newCost = order.cost;
+    const rideDetails = await db.collection("Rides").findOne({name: rideNameToRemove});
+    if (rideDetails && order.fastPasses.find(fp => fp.name === rideNameToRemove && fp.selected)) {
+        newCost -= rideDetails.fast_track_cost; // Assuming cost is adjusted directly
+    }
+
+    // Update the document in the collection
+    const updatedDoc = {
+        $set: {
+            fastPasses: updatedFastPasses,
+            cost: newCost
+        }
+    };
+
+    await collection.updateOne({_id: new ObjectId(orderId)}, updatedDoc);
+
+    res.redirect("/tickets/orders/use-ticket/" + orderId);
+});
+
+
+
 // View Orders by ID --- But we might want to limit this to only if the user has access!
 // router.get("/orders/:orderId", async (req, res, next) => {
 //     // Local Variables
