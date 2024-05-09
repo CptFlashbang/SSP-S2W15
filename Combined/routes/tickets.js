@@ -34,29 +34,32 @@ router.get('/buy-tickets', allowed ,async (req, res) => {
     res.render("buy-tickets", { ridesList: ridesList });
 });
 
-router.post("/buy-tickets", allowed ,async (req, res, next) => {
+router.post("/buy-tickets", allowed, async (req, res, next) => {
     let collection1 = await db.collection("Rides");
     let results = await collection1.find({}).toArray();
-    const ridesList = results.map(ride => {
-        return {
-            id: ride._id,
-            name: ride.name,
-            fast_track_cost: parseFloat(ride.fast_track_cost),
-            min_height: ride.min_height
-        };
-    });
+    const ridesList = results.map(ride => ({
+        id: ride._id,
+        name: ride.name,
+        fast_track_cost: parseFloat(ride.fast_track_cost),
+        min_height: ride.min_height
+    }));
+
     let collection2 = await db.collection("Orders");
+
+    const hasFastPasses = Array.isArray(req.body.fastPasses) && req.body.fastPasses.length > 0;
+
     let newDoc = {
         date_booked: new Date(),
         visit_date: req.body.visitDate,
         fastPasses: ridesList.map(ride => ({
             name: ride.name,
-            selected: req.body.fastPasses.includes(ride.name)
+            selected: hasFastPasses && req.body.fastPasses.includes(ride.name)
         })),
         cost: ridesList.reduce((acc, ride) => {
-            return req.body.fastPasses && req.body.fastPasses.includes(ride.name) ? acc + ride.fast_track_cost : acc;
-        }, 20)
+            return hasFastPasses && req.body.fastPasses.includes(ride.name) ? acc + ride.fast_track_cost : acc;
+        }, 20) // Base cost or admission fee could be a configurable value
     };
+
     console.log(req.body);
     // console.log("Document to be inserted:", newDoc);
 
@@ -64,6 +67,7 @@ router.post("/buy-tickets", allowed ,async (req, res, next) => {
 
     res.render("tickets-bought");
 });
+
 
 router.get("/orders/past-tickets", allowed ,async (req, res, next) => {
     let collection = await db.collection("Orders");
