@@ -87,7 +87,7 @@ router.post('/sign-up', create, (req, res) =>
 //     });
 // });
 
-router.post("/sign-out", (req, res) =>
+router.get("/sign-out", (req, res) =>
 {
     // Local Const
     const sessionCookie = req.cookies.session || "";
@@ -182,5 +182,5 @@ function allowed(req, res, next)
         res.redirect(401, "/users/sign-in");
     }
 }
-
+export { allowed };
 export default router;
