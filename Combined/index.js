@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 import userRouter from "./routes/users.js";
 import ticketsRouter from "./routes/tickets.js";
 import db from "./db/connection.js";
+import cookieParser from "cookie-parser";
 
 // Application Objects
 const __filename = fileURLToPath(import.meta.url);
@@ -21,6 +22,9 @@ app.set("views", path.join(__dirname, "views"));
 
 // Preroute MIDDLEWARE -------------------------------------------------------
 app.use(express.static(path.join(__dirname,"public")));
+app.use(express.json());  // Middleware to parse JSON
+app.use(express.urlencoded({ extended: true }));  // Middleware to parse URL-encoded bodies
+app.use(cookieParser());  // Add cookie-parser middleware here
 
 // ROUTERS -------------------------------------------------------------------
 app.use("/users", userRouter);
